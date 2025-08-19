@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "quizcraft-backend",
   "version": "1.0.0",
   "description": "Backend for quizzing website",
   "main": "index.js",
