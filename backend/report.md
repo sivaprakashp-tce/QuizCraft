@@ -665,7 +665,7 @@ All API responses follow this standard format:
 
 ### 16. Get Questions by Quiz
 
-**Endpoint:** `GET /api/quiz/questions`
+**Endpoint:** `GET /api/quiz/questions/:quizId`
 
 **Authentication:** Required
 
