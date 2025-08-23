@@ -19,12 +19,11 @@ const QuizContainer = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
 
-    const JWTToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGE0MzQxODZkYzFjNmYwNWZiNDk1NWIiLCJpYXQiOjE3NTU4NTY0MzAsImV4cCI6MTc1NTk0MjgzMH0.4pHr-oGDo0ueITrmRryMojuKVj-d4iPRuy5uk2NWNSw";
+    const JWTToken = import.meta.env.VITE_JWTToken;
 
     useEffect(() => {
         try {
-            fetch(`http://localhost:5500/api/quiz/${quizId}`, {
+            fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${JWTToken}`,
@@ -47,7 +46,7 @@ const QuizContainer = () => {
         }
 
         try {
-            fetch(`http://localhost:5500/api/quiz/questions/${quizId}`, {
+            fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/questions/${quizId}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${JWTToken}`,

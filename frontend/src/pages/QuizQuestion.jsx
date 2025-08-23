@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const QuizQuestion = () => {
     return (
@@ -14,8 +14,9 @@ const QuizQuestion = () => {
 };
 
 const Question = () => {
-    const JWTToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGE0MzQxODZkYzFjNmYwNWZiNDk1NWIiLCJpYXQiOjE3NTU4NTY0MzAsImV4cCI6MTc1NTk0MjgzMH0.4pHr-oGDo0ueITrmRryMojuKVj-d4iPRuy5uk2NWNSw";
+    const JWTToken = import.meta.env.VITE_JWTToken;
+
+    const navigate = useNavigate();
 
     const { number } = useParams();
     const qn = Number(number)
@@ -54,19 +55,32 @@ const Question = () => {
         return <div className="">Loading...</div>;
     }
 
-    const handleNext = () => {
+    const saveOption = () => {
         let ansArr = JSON.parse(localStorage.getItem('SelectedAnswers'));
         localStorage.removeItem('SelectedAnswers')
         ansArr[qn-1].selectedAnswer = selectedOptionIndex
         localStorage.setItem('SelectedAnswers', JSON.stringify(ansArr))
     }
 
+    const handlePrevious = () => {
+        saveOption()
+        navigate(`/quiz/question/${qn - 1}`, {replace: true})
+    }
+
+    const handleNext = () => {
+        saveOption()
+        navigate(`/quiz/question/${qn + 1}`, {replace: true})
+    }
+
     const handleSubmit = () => {
-        handleNext();
+        setLoading(true)
         let ansArr = JSON.parse(localStorage.getItem('SelectedAnswers'));
+        localStorage.removeItem('SelectedAnswers')
+        ansArr[qn-1].selectedAnswer = selectedOptionIndex
+        localStorage.setItem('SelectedAnswers', JSON.stringify(ansArr))
         let quizId = JSON.parse(localStorage.getItem('Questions'))[0].quizId
 
-        fetch('http://localhost:5500/api/quiz/attended', {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/attended`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${JWTToken}`,
@@ -83,8 +97,11 @@ const Question = () => {
             } else {
                 throw new Error("Didn't save attempt")
             }
-        }).then((res) => console.log(res))
-
+        }).then((res) => {
+            localStorage.setItem('QuizResult', JSON.stringify(res))
+            localStorage.removeItem("SelectedAnswers")
+            navigate('/quiz/result', { replace: true })
+        }).catch((err) => console.log("Error in posting the attempt", err))
     }
 
     return (
@@ -101,10 +118,10 @@ const Question = () => {
                         ))}
                     </div>
                     <div className="question-nav-buttons w-full flex justify-between items-center">
-                        <a href={`/quiz/question/${qn - 1}`} onClick={handleNext} className={`quiz-nav-button ${(qn > 1) ? 'block' : 'invisible'}`}>Previous</a>
+                        <button onClick={handlePrevious} className={`quiz-nav-button ${(qn > 1) ? 'block' : 'invisible'}`}>Previous</button>
                         {(qn == noOfQues) ? 
                         (<button className="quiz-nav-button" onClick={handleSubmit}>Submit</button>) : 
-                        (<a href={`/quiz/question/${qn + 1}`} onClick={handleNext} id='nav-next-btn' className="quiz-nav-button">Next</a>)}
+                        (<button onClick={handleNext} id='nav-next-btn' className="quiz-nav-button">Next</button>)}
                     </div>
                 </div>
             </div>

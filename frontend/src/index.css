@@ -18,8 +18,13 @@
 html {
     scroll-behavior: smooth;
     color-scheme: dark;
+    overflow-x: hidden;
 }
 
 .quiz-nav-button {
     @apply bg-black text-white font-bold text-lg px-5 py-3 rounded-xl hover:underline hover:scale-105 transition-transform
+}
+
+.answer-display-row {
+  @apply flex justify-between items-center gap-5
 }

@@ -40,14 +40,14 @@ export const submitQuizAttempt = catchAsync(async (req, res, next) => {
     }
 
     // Check if user has already attempted this quiz
-    const existingAttempt = await Attempt.findOne({ 
-        userId: req.user._id, 
-        quizId 
-    });
+    // const existingAttempt = await Attempt.findOne({ 
+    //     userId: req.user._id, 
+    //     quizId 
+    // });
 
-    if (existingAttempt) {
-        return next(new AppError('You have already attempted this quiz', 409, 'ALREADY_ATTEMPTED'));
-    }
+    // if (existingAttempt) {
+    //     return next(new AppError('You have already attempted this quiz', 409, 'ALREADY_ATTEMPTED'));
+    // }
 
     // Calculate score and process answers
     let totalScore = 0;
