@@ -22,6 +22,7 @@ const QuizContainer = () => {
     const JWTToken = import.meta.env.VITE_JWTToken;
 
     useEffect(() => {
+        localStorage.clear()
         try {
             fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}`, {
                 method: "GET",
