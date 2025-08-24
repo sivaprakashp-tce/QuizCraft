@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
@@ -6,7 +5,11 @@ import { useNavigate } from "react-router-dom"; // for navigation
 import websiteLogo from "../assets/websiteLogo.svg";
 
 function Signup() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [registered, setRegistered] = useState(false);
   const [letters, setLetters] = useState([]);
   const navigate = useNavigate();
@@ -26,7 +29,7 @@ function Signup() {
           {
             id: Date.now() + Math.random(),
             char,
-            x: Math.random() * window.innerWidth, 
+            x: Math.random() * window.innerWidth,
           },
         ]);
       }, 150);
@@ -65,7 +68,9 @@ function Signup() {
                 className="w-full px-4 py-2 rounded-lg bg-transparent border border-[#D4A981] focus:outline-none focus:ring-2 focus:ring-[#D4A981]"
               />
               {errors.username && (
-                <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.username.message}
+                </p>
               )}
             </div>
 
@@ -78,7 +83,9 @@ function Signup() {
                 className="w-full px-4 py-2 rounded-lg bg-transparent border border-[#D4A981] focus:outline-none focus:ring-2 focus:ring-[#D4A981]"
               />
               {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -94,7 +101,9 @@ function Signup() {
                 className="w-full px-4 py-2 rounded-lg bg-transparent border border-[#D4A981] focus:outline-none focus:ring-2 focus:ring-[#D4A981]"
               />
               {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
@@ -102,7 +111,9 @@ function Signup() {
             <div>
               <label className="block mb-1 text-sm">Institution</label>
               <select
-                {...register("institution", { required: "Institution is required" })}
+                {...register("institution", {
+                  required: "Institution is required",
+                })}
                 className="w-full px-4 py-2 rounded-lg bg-black border border-[#D4A981] focus:outline-none focus:ring-2 focus:ring-[#D4A981]"
               >
                 <option value="">Select Institution</option>
@@ -110,7 +121,9 @@ function Signup() {
                 <option value="TCE">Thiagarajar College of Engineering</option>
               </select>
               {errors.institution && (
-                <p className="text-red-500 text-xs mt-1">{errors.institution.message}</p>
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.institution.message}
+                </p>
               )}
             </div>
 
@@ -126,14 +139,16 @@ function Signup() {
                 <option value="DS">Data Science</option>
               </select>
               {errors.stream && (
-                <p className="text-red-500 text-xs mt-1">{errors.stream.message}</p>
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.stream.message}
+                </p>
               )}
             </div>
 
             {/* Register Button */}
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-[#D4A981] text-white font-semibold rounded-lg hover:bg-[#c99767] transition"
+              className="w-full py-2 px-4 bg-[#D4A981] text-black font-bold rounded-lg hover:bg-[#c99767] transition"
             >
               Register
             </button>
@@ -194,7 +209,3 @@ function Signup() {
 }
 
 export default Signup;
-
-
-
-

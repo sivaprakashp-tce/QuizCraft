@@ -1,4 +1,14 @@
 @import "tailwindcss";
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+.animate-blinkDots {
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: blink 2s infinite;
+}
+
 
 @keyframes fall {
   0% {
