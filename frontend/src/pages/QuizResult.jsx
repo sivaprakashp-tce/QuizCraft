@@ -16,7 +16,7 @@ const QuizResult = () => {
         } catch (err) {
             setError(true)
             console.log("Result not found", err)
-            navigate('/')
+            navigate('/dashboard')
         }
     }, [navigate])
 
@@ -44,7 +44,7 @@ const DisplayResult = ({result}) => {4
     const navigate = useNavigate();
     function handleNext() {
         localStorage.clear()
-        navigate('/', {replace: true})
+        navigate('/dashboard', {replace: true})
     }
 
     return (
@@ -53,7 +53,7 @@ const DisplayResult = ({result}) => {4
                 <p className="">Congratulations!!</p>
                 <h2 className="">You have scored</h2>
                 <h1 className="text-5xl font-bold">{result.score}/{result.totalPossibleScore}</h1>
-                <div className="percentage-bar w-11/12 h-10 bg-white">
+                <div className="percentage-bar w-11/12 h-10 bg-black">
                     <div className={`filled-percentage h-full bg-sky-500 w-[${result.percentage}%]`}></div>
                 </div>
                 <h3 className="">In {result.quiz.quizName} quiz</h3>
