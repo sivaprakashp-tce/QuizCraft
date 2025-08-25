@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar.jsx";
 import { useNavigate, useParams } from "react-router-dom";
+import Footer from '../components/Footer.jsx'
+import Fireflies from '../components/Fireflies.jsx'
+import Runes from '../components/Runes.jsx'
+import ProgressBar from "../components/ProgressBar.jsx";
 
 const QuizQuestion = () => {
     return (
@@ -9,12 +13,18 @@ const QuizQuestion = () => {
             <div className="w-screen h-[92vh] flex justify-center items-center">
                 <Question />
             </div>
+            <div id="runes-container" className="fixed inset-0 pointer-events-none w-screen"></div>
+            <Runes />
+            <div className="fireflies-container w-screen" />
+            <Fireflies />
+            <Footer />
         </React.Fragment>
     );
 };
 
 const Question = () => {
     const JWTToken = import.meta.env.VITE_JWTToken;
+    const quizNavButton = "bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-full font-bold hover:from-purple-500 hover:to-blue-500 transform hover:scale-105 mystical-glow"
 
     const navigate = useNavigate();
 
@@ -106,25 +116,36 @@ const Question = () => {
 
     return (
         <React.Fragment>
-            <div className="question-cont bg-white text-black w-11/12 lg:w-5/6 min-h-2/3 lg:h-5/6 rounded-xl shadow-xl flex justify-center items-center">
-                <div className="question-wrapper w-5/6 flex flex-col justify-around gap-5 lg:gap-10 p-5">
-                    <div className="question-text-wrapper">
-                        <h3 className="font-semibold text-lg text-gray-600">Question {qn}</h3>
-                        <h2 className="font-bold text-3xl">{question.question}</h2>
-                    </div>
-                    <div className="question-options flex flex-col justify-center items-center lg:grid grid-cols-2 grid-rows-2 gap-5 lg:gap-10 w-full lg:w-5/6 mx-auto">
-                        {question.options.map((option, i) => (
-                            <button className={`py-8 px-14 w-10/12 lg:w-auto text-xl border-2  rounded-xl  text-white font-semibold text-center flex justify-center items-center hover:bg-sky-500 hover:border-sky-600 transition-colors cursor-pointer ${(selectedOptionIndex == i) ? 'bg-sky-500 border-sky-600' : 'bg-gray-600 border-gray-800' }`} key={i} onClick={() => setSelectedOptionIndex(i)}>{option}</button>
-                        ))}
-                    </div>
-                    <div className="question-nav-buttons w-full flex justify-between items-center">
-                        <button onClick={handlePrevious} className={`quiz-nav-button ${(qn > 1) ? 'block' : 'invisible'}`}>Previous</button>
-                        {(qn == noOfQues) ? 
-                        (<button className="quiz-nav-button" onClick={handleSubmit}>Submit</button>) : 
-                        (<button onClick={handleNext} id='nav-next-btn' className="quiz-nav-button">Next</button>)}
-                    </div>
-                </div>
+            <div className="bg-gray-900 w-5/6 lg:w-fit lg:max-w-5/6 lg:min-w-2/3 bg-opacity-90 rounded-2xl p-8 mystical-glow">
+            <ProgressBar current={qn} total={noOfQues} progress={100*((qn)/noOfQues)} />
+            <h3 className="text-2xl text-white mb-8 text-center leading-relaxed">
+                🔮 {question.question}
+            </h3>
+            <div className="space-y-4 flex flex-col justify-center items-center lg:grid grid-cols-2 grid-rows-2 gap-5 lg:gap-10 w-full lg:w-5/6 mx-auto">
+                {question.options.map((option, index) => {
+                    return (
+                        <button
+                            key={index}
+                            onClick={() => setSelectedOptionIndex(index)}
+                            className={`py-8 px-14 lg:w-auto text-xl border-2  text-white flex justify-center items-center w-full p-4 rounded-xl text-left font-semibold transition-all duration-300 answer-hover cursor-pointer mb-0 ${(selectedOptionIndex == index) ? 'bg-yellow-600 text-white border-2 border-yellow-600' : 'bg-gray-800 text-white border-2 border-gray-600 hover:border-yellow-400 hover:bg-gray-700'}`}
+                        >
+                            <span className={`${selectedOptionIndex == index ? 'text-gray-200': 'text-yellow-400' } mr-3 text-xl`}>
+                                {String.fromCharCode(65 + index)}.
+                            </span>
+                            {option}
+                        </button>
+                    ); 
+                })}
             </div>
+            <div className="text-center mt-8">
+                <div className="question-nav-buttons w-full flex justify-between items-center">
+                        <button onClick={handlePrevious} className={`${quizNavButton} ${(qn > 1) ? 'block' : 'invisible'}`}>Previous</button>
+                        {(qn == noOfQues) ? 
+                        (<button className={quizNavButton} onClick={handleSubmit}>Submit</button>) : 
+                        (<button onClick={handleNext} id='nav-next-btn' className={quizNavButton}>Next</button>)}
+                    </div>
+            </div>
+        </div>
         </React.Fragment>
     );
 };

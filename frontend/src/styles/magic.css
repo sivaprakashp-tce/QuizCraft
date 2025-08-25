@@ -1,0 +1,279 @@
+/* All custom styles from the original <style> block, including glow, parchment, button, animation, and typography styles. */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    --glow-purple: #a855f7;
+    --glow-blue: #3b82f6;
+    --glow-green: #10b981;
+    --glow-gold: #f59e0b;
+}
+
+.magical-glow {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+}
+
+.firefly {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+    border-radius: 50%;
+    animation: firefly 12s ease-in-out infinite;
+    box-shadow: 0 0 8px #f59e0b;
+}
+
+.firefly:nth-child(2n) {
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    box-shadow: 0 0 8px #a855f7;
+    animation-delay: -3s;
+    animation-duration: 15s;
+}
+
+.firefly:nth-child(3n) {
+    background: radial-gradient(circle, #10b981 0%, transparent 70%);
+    box-shadow: 0 0 8px #10b981;
+    animation-delay: -6s;
+    animation-duration: 18s;
+}
+
+.firefly:nth-child(4n) {
+    background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+    box-shadow: 0 0 8px #3b82f6;
+    animation-delay: -9s;
+    animation-duration: 14s;
+}
+
+@keyframes firefly {
+    0%, 100% { 
+        transform: translateY(0px) translateX(0px) scale(0); 
+        opacity: 0; 
+    }
+    10% { 
+        opacity: 1; 
+        transform: translateY(-20px) translateX(10px) scale(1);
+    }
+    25% { 
+        transform: translateY(-80px) translateX(-30px) scale(1.2); 
+        opacity: 0.8; 
+    }
+    50% { 
+        transform: translateY(-150px) translateX(40px) scale(0.8); 
+        opacity: 1; 
+    }
+    75% { 
+        transform: translateY(-220px) translateX(-20px) scale(1.1); 
+        opacity: 0.6; 
+    }
+    90% { 
+        opacity: 0.3; 
+        transform: translateY(-300px) translateX(15px) scale(0.5);
+    }
+}
+
+.floating-rune {
+    position: absolute;
+    font-size: 20px;
+    color: rgba(168, 85, 247, 0.2);
+    animation: driftRune 20s linear infinite;
+    pointer-events: none;
+    text-shadow: 0 0 10px currentColor;
+}
+
+.floating-rune:nth-child(2n) {
+    color: rgba(16, 185, 129, 0.2);
+    animation-delay: -7s;
+    animation-duration: 25s;
+}
+
+.floating-rune:nth-child(3n) {
+    color: rgba(245, 158, 11, 0.2);
+    animation-delay: -14s;
+    animation-duration: 22s;
+}
+
+@keyframes driftRune {
+    0% { 
+        transform: translateX(-100px) translateY(100vh) rotate(0deg); 
+        opacity: 0; 
+    }
+    10% { 
+        opacity: 0.6; 
+    }
+    90% { 
+        opacity: 0.6; 
+    }
+    100% { 
+        transform: translateX(100vw) translateY(-100px) rotate(360deg); 
+        opacity: 0; 
+    }
+}
+
+.castle-silhouette {
+    position: absolute;
+    right: -10%;
+    bottom: 0;
+    width: 400px;
+    height: 300px;
+    background: linear-gradient(to top, rgba(168, 85, 247, 0.05), transparent);
+    clip-path: polygon(0% 100%, 5% 85%, 15% 85%, 20% 70%, 25% 70%, 30% 60%, 35% 60%, 40% 45%, 45% 45%, 50% 35%, 55% 35%, 60% 50%, 65% 50%, 70% 65%, 75% 65%, 80% 80%, 85% 80%, 90% 90%, 95% 90%, 100% 100%);
+    filter: blur(3px);
+    animation: castleGlow 8s ease-in-out infinite;
+}
+
+@keyframes castleGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+.candle-glow {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, rgba(245, 158, 11, 0.1) 40%, transparent 70%);
+    border-radius: 50%;
+    animation: candleFlicker 4s ease-in-out infinite;
+}
+
+.candle-glow.top-left {
+    top: 10%;
+    left: 5%;
+}
+
+.candle-glow.top-right {
+    top: 15%;
+    right: 8%;
+}
+
+.candle-glow.bottom-left {
+    bottom: 20%;
+    left: 3%;
+}
+
+@keyframes candleFlicker {
+    0%, 100% { 
+        opacity: 0.6; 
+        transform: scale(1); 
+    }
+    25% { 
+        opacity: 0.8; 
+        transform: scale(1.1); 
+    }
+    50% { 
+        opacity: 0.4; 
+        transform: scale(0.9); 
+    }
+    75% { 
+        opacity: 0.9; 
+        transform: scale(1.05); 
+    }
+}
+
+.parchment-card {
+    background: 
+        linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(160, 82, 45, 0.05)),
+        rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(245, 158, 11, 0.3);
+    box-shadow: 
+        0 0 30px rgba(245, 158, 11, 0.2),
+        inset 0 0 30px rgba(245, 158, 11, 0.05);
+}
+
+.crystal-button {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(59, 130, 246, 0.4));
+    border: 2px solid rgba(168, 85, 247, 0.6);
+    box-shadow: 
+        0 0 25px rgba(168, 85, 247, 0.4), 
+        inset 0 0 25px rgba(168, 85, 247, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.crystal-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.crystal-button:hover::before {
+    animation: shimmer 1.5s ease-in-out;
+}
+
+.crystal-button:hover {
+    box-shadow: 
+        0 0 40px rgba(168, 85, 247, 0.7), 
+        inset 0 0 40px rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.9);
+    transform: translateY(-3px) scale(1.02);
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+}
+
+.fade-in {
+    animation: fadeInScale 1.2s ease-out forwards;
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+}
+
+@keyframes fadeInScale {
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.arcane-text {
+    animation: arcaneGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes arcaneGlow {
+    from { 
+        text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; 
+    }
+    to { 
+        text-shadow: 0 0 15px currentColor, 0 0 25px currentColor, 0 0 35px currentColor; 
+    }
+}
+
+.mystical-line {
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(245, 158, 11, 0.3), 
+        rgba(168, 85, 247, 0.5), 
+        rgba(16, 185, 129, 0.3), 
+        transparent
+    );
+    height: 2px;
+    animation: lineShimmer 4s ease-in-out infinite;
+    position: relative;
+}
+
+.mystical-line::before {
+    content: '◊ ✦ ◊ ✦ ◊ ✦ ◊ ✦ ◊ ✦ ◊';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: rgba(245, 158, 11, 0.6);
+    letter-spacing: 20px;
+    text-shadow: 0 0 10px currentColor;
+}
+
+@keyframes lineShimmer {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}

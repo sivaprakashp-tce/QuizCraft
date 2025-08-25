@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Butcherman&display=swap');
+
+.mystical-bg {
+    background: linear-gradient(135deg, #202020 0%, #1a1a2e 50%, #16213e 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.floating-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, #ffd700, #ff6b35);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+.particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
+.particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
+.particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 3s; }
+.particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 4s; }
+.particle:nth-child(6) { width: 6px; height: 6px; left: 60%; animation-delay: 5s; }
+.particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 1.5s; }
+.particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 2.5s; }
+.particle:nth-child(9) { width: 4px; height: 4px; left: 90%; animation-delay: 3.5s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+.mystical-glow {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 107, 53, 0.2);
+}
+
+.answer-hover {
+    transition: all 0.3s ease;
+}
+
+.answer-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+.progress-glow {
+    background: linear-gradient(90deg, #ffd700, #ff6b35);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+.spell-cast {
+    animation: spellCast 0.6s ease-out;
+}
+
+@keyframes spellCast {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+    100% { transform: scale(1); }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.floating-rune {
+  position: absolute;
+  opacity: 0.7;
+  pointer-events: none;
+  user-select: none;
+  animation: rune-float 22s linear infinite;
+  font-family: 'Segoe UI Symbol', 'Arial', sans-serif;
+  font-weight: bold;
+  filter: blur(0.5px);
+}
+
+@keyframes rune-float {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 0.7;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-40vh) scale(1.1) rotate(10deg);
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0.9) rotate(-10deg);
+    opacity: 0;
+  }
+}
