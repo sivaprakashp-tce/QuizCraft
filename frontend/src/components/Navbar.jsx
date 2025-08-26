@@ -17,8 +17,6 @@ const Navbar = () => {
     "Home",
     "About",
     "Quizzes",
-    "Question Bank",
-    "Test Yourself",
     "Contact",
   ];
 
