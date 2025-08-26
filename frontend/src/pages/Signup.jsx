@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom"; // for navigation
-import websiteLogo from "../assets/websiteLogo.svg";
+import {websiteLogo} from "../assets";
 
 function Signup() {
   const {

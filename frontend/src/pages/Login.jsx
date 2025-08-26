@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
-import websiteLogo from "../assets/websiteLogo.svg";
+import {websiteLogo} from "../assets";
 import FallingLetters from "../components/FallingLetters";
 import { Link } from "react-router-dom";
 
