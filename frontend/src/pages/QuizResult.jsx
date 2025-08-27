@@ -11,7 +11,7 @@ const QuizResult = () => {
 
     useEffect(() => {
         try {
-            setResult(JSON.parse(localStorage.getItem('QuizResult')).data.attempt)
+            setResult(JSON.parse(sessionStorage.getItem('QuizResult')).data.attempt)
             setLoading(false)
         } catch (err) {
             setError(true)
@@ -43,7 +43,7 @@ const QuizResult = () => {
 const DisplayResult = ({result}) => {4
     const navigate = useNavigate();
     function handleNext() {
-        localStorage.clear()
+        sessionStorage.clear()
         navigate('/dashboard', {replace: true})
     }
 
@@ -71,7 +71,7 @@ const AnswersReview = ({answers}) => {
 
     useEffect(() => {
         try {
-            setQuestions(JSON.parse(localStorage.getItem('Questions')))
+            setQuestions(JSON.parse(sessionStorage.getItem('Questions')))
             setLoading(false)
         } catch (err) {
             setError(true)
