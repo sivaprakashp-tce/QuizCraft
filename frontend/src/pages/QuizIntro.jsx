@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar.jsx";
 import { useParams } from "react-router-dom";
-import Fireflies from "../components/Fireflies";
+import Footer from '../components/Footer.jsx'
+import Fireflies from '../components/Fireflies.jsx'
+import Runes from '../components/Runes.jsx'
 
 const QuizIntro = () => {
     return (
         <React.Fragment>
             <Navbar />
-            <div
-                id="fireflies-container"
-                className="website-cont w-screen h-[92vh] flex justify-center items-center 
-                           bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white relative overflow-hidden"
-            >
-                {/* Magical floating lights */}
-                <Fireflies count={30} />
-
-                {/* Subtle glow mist */}
-                <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-yellow-900/10 pointer-events-none"></div>
-
+            <div className="w-screen h-[92vh] flex justify-center items-center relative overflow-hidden">
                 <QuizContainer />
             </div>
+            {/* Effects (same as QuizQuestion) */}
+            <div id="runes-container" className="fixed inset-0 pointer-events-none w-screen"></div>
+            <Runes />
+            <div className="fireflies-container w-screen" />
+            <Fireflies />
+            <Footer />
         </React.Fragment>
     );
 };
@@ -33,11 +31,9 @@ const QuizContainer = () => {
     const JWTToken = import.meta.env.VITE_JWTToken;
 
     useEffect(() => {
-        // clear only quiz-related localStorage keys
         localStorage.removeItem("Questions");
         localStorage.removeItem("SelectedAnswers");
 
-        // fetch quiz details
         fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -59,7 +55,6 @@ const QuizContainer = () => {
                 console.error("Error fetching quiz data:", error);
             });
 
-        // fetch quiz questions & save to localStorage
         fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/questions/${quizId}`, {
             method: "GET",
             headers: {
@@ -92,55 +87,49 @@ const QuizContainer = () => {
 
     return (
         <div
-            className="quiz-container w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 
-                       bg-gradient-to-b from-gray-800/90 to-black/95 rounded-2xl shadow-2xl
-                       border border-purple-500/40 hover:border-pink-400/60 transition-all duration-500
-                       text-white flex justify-center items-center text-center p-10 relative z-10
-                       animate-fadeIn"
+            className="bg-gray-900 w-5/6 lg:max-w-3xl 
+                       bg-opacity-90 rounded-2xl p-12 mystical-glow 
+                       text-center flex flex-col items-center space-y-8
+                       border-2 border-purple-500/40 hover:border-pink-400/60 transition-all duration-500"
         >
-            <div className="content-wrapper flex flex-col justify-around items-center space-y-8">
-                {/* Title with gradient magical glow */}
-                <h1
-                    className="text-5xl md:text-7xl font-extrabold 
-                               bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-300 
-                               text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(236,72,153,0.7)]"
-                >
-                    {quizDetails.quizName}
-                </h1>
+            {/* Decorative Icon */}
+            <div className="text-5xl mb-2 animate-bounce">📜</div>
 
-                {/* Subtitle */}
-                <h3 className="text-lg md:text-2xl font-light text-gray-200 italic">
-                    {quizDetails.quizDescription}
-                </h3>
+            {/* Big Title */}
+            <h1 className="text-5xl md:text-6xl font-extrabold 
+                           bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-300 
+                           text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(236,72,153,0.7)]">
+                {quizDetails.quizName}
+            </h1>
 
-                {/* Creator Info */}
-                <div className="creator-info-group md:text-lg text-gray-300 space-y-1">
-                    <p>
-                        By{" "}
-                        <span className="font-semibold text-yellow-300">
-                            {quizDetails.userId.name}
-                        </span>
-                    </p>
-                    <p>
-                        From{" "}
-                        <span className="font-semibold text-purple-300">
-                            {quizDetails.institutionId.name}
-                        </span>
-                    </p>
-                </div>
+            {/* Subtitle */}
+            <h3 className="text-lg md:text-2xl font-light text-gray-200 italic max-w-2xl">
+                {quizDetails.quizDescription}
+            </h3>
 
-                {/* Enchanted Start Button */}
-                <a
-                    className="bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 
-                               text-black px-10 py-4 rounded-full text-lg font-bold 
-                               shadow-lg hover:shadow-[0_0_30px_rgba(236,72,153,0.8)] 
-                               hover:scale-110 transition-all duration-300 cursor-pointer
-                               relative overflow-hidden group"
-                    href="/quiz/question/1"
-                >
-                    <span className="relative z-10">⚡ Begin the Quest</span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 blur-xl transition"></span>
-                </a>
+            {/* Start Button - larger and multi-gradient */}
+            <a
+                className="bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 text-black 
+                           px-12 py-5 rounded-full text-xl font-bold 
+                           shadow-lg hover:shadow-[0_0_30px_rgba(236,72,153,0.8)] 
+                           hover:scale-110 mystical-glow transition-all duration-300"
+                href="/quiz/question/1"
+            >
+                ⚡ Begin the Quest
+            </a>
+
+            {/* Creator Info at bottom */}
+            <div className="text-gray-300 text-sm md:text-lg italic pt-4 border-t border-gray-700 w-full">
+                <p>
+                    By{" "}
+                    <span className="font-semibold text-yellow-300">
+                        {quizDetails.userId.name}
+                    </span>{" "}
+                    •{" "}
+                    <span className="font-semibold text-purple-300">
+                        {quizDetails.institutionId.name}
+                    </span>
+                </p>
             </div>
         </div>
     );
