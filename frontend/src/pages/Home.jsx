@@ -1,23 +1,29 @@
-
 import { useEffect, useState } from "react";
 import boyImage from "../assets/boy.svg";
-import {websiteLogo} from "../assets";
+import { websiteLogo } from "../assets";
 import { motion } from "framer-motion";
 import Navbarhome from "../components/Navbarhome";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [typedText, setTypedText] = useState("");
-  const [showHome, setShowHome] = useState(false);
   const fullText = "QuizCraft";
 
-  // Loading progress
+  // Check if loading has already finished for this session
+  const hasLoaded = sessionStorage.getItem("hasLoaded");
+
+  const [loading, setLoading] = useState(!hasLoaded); // show loading only if not loaded in session
+  const [progress, setProgress] = useState(0);
+  const [typedText, setTypedText] = useState("");
+  const [showHome, setShowHome] = useState(hasLoaded); // skip loading if already done
+
+ 
   useEffect(() => {
+    if (!loading) return;
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
+          
           setTimeout(() => setLoading(false), 500);
           return 100;
         }
@@ -26,29 +32,28 @@ export default function Home() {
     }, 40);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [loading]);
 
-  // Typewriter effect, then switch to Home
+  // Typewriter effect
   useEffect(() => {
-    if (!loading) {
+    if (!loading && !hasLoaded) {
       let i = 0;
       const typing = setInterval(() => {
         setTypedText(fullText.slice(0, i + 1));
         i++;
         if (i === fullText.length) {
           clearInterval(typing);
-          // after a small pause, show home page
+          sessionStorage.setItem("hasLoaded", "true"); // mark as loaded for this session
           setTimeout(() => setShowHome(true), 1000);
         }
       }, 150);
 
       return () => clearInterval(typing);
     }
-  }, [loading]);
+  }, [loading, hasLoaded]);
 
   return (
     <div className="relative w-full h-screen">
-      {/* --------- If HOME PAGE is shown --------- */}
       {showHome ? (
         <motion.div
           className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-[#1e1e1e] to-[#3a2d2d]"
@@ -60,7 +65,7 @@ export default function Home() {
         </motion.div>
       ) : (
         <>
-          {/* Background image */}
+          
           {!loading && (
             <img
               src={boyImage}
@@ -69,18 +74,15 @@ export default function Home() {
             />
           )}
 
-          {/* Loading screen with logo + progress bar */}
+         
           {loading && (
             <div className="flex items-center justify-center h-screen bg-black">
               <div className="flex items-center space-x-4">
-                {/* Logo on the left */}
                 <img
                   src={websiteLogo}
                   alt="QuizCraft Logo"
                   className="w-16 h-16 rounded-full"
                 />
-
-                {/* Progress bar */}
                 <motion.div
                   className="w-64 h-4 rounded-full overflow-hidden bg-white/20"
                   initial={{ opacity: 0 }}
@@ -101,18 +103,7 @@ export default function Home() {
             </div>
           )}
 
-          {/* Logo on the top-left */}
-          {!loading && (
-            <div className="absolute top-4 left-4 p-4 z-10">
-              <img
-                src={websiteLogo}
-                alt="QuizCraft Logo"
-                className="w-20 h-20 rounded-full hover:border-2 border-white"
-              />
-            </div>
-          )}
-
-          {/* Typewriter text (QuizCraft) */}
+         
           {!loading && !showHome && (
             <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <motion.h1 className="text-5xl font-bold text-[#AD8B70]">
@@ -131,7 +122,6 @@ export default function Home() {
     </div>
   );
 }
-
 
 
 
