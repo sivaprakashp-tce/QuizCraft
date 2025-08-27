@@ -38,7 +38,7 @@ const Question = () => {
 
     useEffect(() => {
         try {
-            let check = localStorage.getItem("Questions");
+            let check = sessionStorage.getItem("Questions");
             if (check) {
                 let questions = JSON.parse(check);
                 setNoOfQues(questions.length)
@@ -53,7 +53,7 @@ const Question = () => {
             setError(true);
         }
 
-        let answers = JSON.parse(localStorage.getItem('SelectedAnswers'))
+        let answers = JSON.parse(sessionStorage.getItem('SelectedAnswers'))
         setSelectedOptionIndex(answers[qn-1].selectedAnswer)
     }, [qn]);
 
@@ -66,10 +66,10 @@ const Question = () => {
     }
 
     const saveOption = () => {
-        let ansArr = JSON.parse(localStorage.getItem('SelectedAnswers'));
-        localStorage.removeItem('SelectedAnswers')
+        let ansArr = JSON.parse(sessionStorage.getItem('SelectedAnswers'));
+        sessionStorage.removeItem('SelectedAnswers')
         ansArr[qn-1].selectedAnswer = selectedOptionIndex
-        localStorage.setItem('SelectedAnswers', JSON.stringify(ansArr))
+        sessionStorage.setItem('SelectedAnswers', JSON.stringify(ansArr))
     }
 
     const handlePrevious = () => {
@@ -84,11 +84,11 @@ const Question = () => {
 
     const handleSubmit = () => {
         setLoading(true)
-        let ansArr = JSON.parse(localStorage.getItem('SelectedAnswers'));
-        localStorage.removeItem('SelectedAnswers')
+        let ansArr = JSON.parse(sessionStorage.getItem('SelectedAnswers'));
+        sessionStorage.removeItem('SelectedAnswers')
         ansArr[qn-1].selectedAnswer = selectedOptionIndex
-        localStorage.setItem('SelectedAnswers', JSON.stringify(ansArr))
-        let quizId = JSON.parse(localStorage.getItem('Questions'))[0].quizId
+        sessionStorage.setItem('SelectedAnswers', JSON.stringify(ansArr))
+        let quizId = JSON.parse(sessionStorage.getItem('Questions'))[0].quizId
 
         fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/attended`, {
             method: 'POST',
@@ -108,8 +108,8 @@ const Question = () => {
                 throw new Error("Didn't save attempt")
             }
         }).then((res) => {
-            localStorage.setItem('QuizResult', JSON.stringify(res))
-            localStorage.removeItem("SelectedAnswers")
+            sessionStorage.setItem('QuizResult', JSON.stringify(res))
+            sessionStorage.removeItem("SelectedAnswers")
             navigate('/quiz/result', { replace: true })
         }).catch((err) => console.log("Error in posting the attempt", err))
     }

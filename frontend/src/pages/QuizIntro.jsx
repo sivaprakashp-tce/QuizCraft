@@ -33,9 +33,9 @@ const QuizContainer = () => {
     const JWTToken = import.meta.env.VITE_JWTToken;
 
     useEffect(() => {
-        // clear only quiz-related localStorage keys
-        localStorage.removeItem("Questions");
-        localStorage.removeItem("SelectedAnswers");
+        // clear only quiz-related sessionStorage keys
+        sessionStorage.removeItem("Questions");
+        sessionStorage.removeItem("SelectedAnswers");
 
         // fetch quiz details
         fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}`, {
@@ -59,7 +59,7 @@ const QuizContainer = () => {
                 console.error("Error fetching quiz data:", error);
             });
 
-        // fetch quiz questions & save to localStorage
+        // fetch quiz questions & save to sessionStorage
         fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/questions/${quizId}`, {
             method: "GET",
             headers: {
@@ -77,8 +77,8 @@ const QuizContainer = () => {
                             selectedAnswer: -1,
                         });
                     }
-                    localStorage.setItem("Questions", JSON.stringify(res.data.questions));
-                    localStorage.setItem("SelectedAnswers", JSON.stringify(answers));
+                    sessionStorage.setItem("Questions", JSON.stringify(res.data.questions));
+                    sessionStorage.setItem("SelectedAnswers", JSON.stringify(answers));
                 }
             })
             .catch((err) => {
