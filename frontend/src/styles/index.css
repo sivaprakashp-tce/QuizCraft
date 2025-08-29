@@ -38,3 +38,11 @@ html {
 .answer-display-row {
   @apply flex justify-between items-center gap-5
 }
+
+.get-quiz-details-input {
+  @apply p-3 text-lg w-74 border-b-2 border-black
+}
+
+.input-field-wrapper {
+  @apply flex justify-between items-center w-full
+}
