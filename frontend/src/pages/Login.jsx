@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { websiteLogo } from "../assets";
 import FallingLetters from "../components/FallingLetters";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, replace, useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate()
@@ -15,8 +15,9 @@ function Login() {
 
     const [showPassword, setShowPassword] = useState(false);
 
+    if (localStorage.getItem('token')) navigate('/dashboard', replace)
+
     const onSubmit = (data) => {
-        // console.log("Form Data:", JSON.stringify(data));
         fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
             method: "POST",
             headers: {

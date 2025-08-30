@@ -23,11 +23,16 @@ const Navbar = () => {
   return (
     <nav className="relative w-full bg-black text-white shadow-md">
       <div className="relative z-10 flex items-center justify-between px-6 py-4">
-        <img
-          src={websiteLogo}
-          alt="QuizCraft Logo"
-          className="w-16 h-16 rounded-full hover:border-2 border-white cursor-pointer"
-        />
+        <div className="logo-wrapper">
+          <a href="/" className="flex items-center gap-2">
+            <img
+              src={websiteLogo}
+              alt="QuizCraft Logo"
+              className="w-16 h-16 rounded-full hover:border-2 border-white cursor-pointer"
+            />
+            <h2 className="text-3xl font-bold text-yellow-400 md:text-4xl">Quiz Craft</h2>
+          </a>
+        </div>
 
         <div className="hidden md:flex items-center space-x-12 text-lg font-semibold">
           {menuItems.map((item, index) => (

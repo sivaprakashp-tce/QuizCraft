@@ -71,7 +71,6 @@ const Dashboard = () => {
     useEffect(() => {
         // /api/quizzes/:stream
         if (gotUserData) {
-            console.log(user);
             fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/quizzes/${
                     user.streamId._id

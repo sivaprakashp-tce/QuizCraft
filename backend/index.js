@@ -15,6 +15,8 @@ import attemptRoutes from './routes/attemptRoutes.js';
 import institutionRoutes from './routes/institutionRoutes.js';
 import streamRoutes from './routes/streamRoutes.js';
 import miscRoutes from './routes/miscRoutes.js';
+import { getAllInstitutions } from './controllers/institutionController.js';
+import { getAllStreams } from './controllers/streamController.js';
 
 const app = express();
 
@@ -87,6 +89,8 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
+app.get('/api/institutions', getAllInstitutions);
+app.get('/api/streams', getAllStreams);
 app.use('/api/auth', authRoutes);
 app.use('/api', quizRoutes);
 app.use('/api', questionRoutes);
