@@ -14,7 +14,6 @@ const router = express.Router();
 router.use(authenticate);
 
 // Stream routes (for all authenticated users)
-router.get('/streams', getAllStreams);
 router.get('/stream/:streamId', getStream);
 router.post('/stream', createStream);
 router.put('/stream/:streamId', updateStream);

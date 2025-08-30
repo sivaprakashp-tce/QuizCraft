@@ -14,7 +14,6 @@ const router = express.Router();
 router.use(authenticate);
 
 // Institution routes (for all authenticated users)
-router.get('/institutions', getAllInstitutions);
 router.get('/institution/:id', getInstitution);
 router.post('/institution', createInstitution);
 router.put('/institution/:id', updateInstitution);

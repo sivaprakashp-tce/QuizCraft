@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SpellTab from "/src/components/SpellTab.jsx";
+import { replace, useNavigate } from "react-router-dom";
 
 // Custom hook to handle the typewriter effect
 const useTypewriterEffect = (textToType, speed) => {
@@ -28,7 +29,11 @@ const useTypewriterEffect = (textToType, speed) => {
 };
 
 const Dashboard = () => {
-    const JWTToken = import.meta.env.VITE_JWTToken;
+    const navigate = useNavigate()
+    const JWTToken = JSON.parse(localStorage.getItem("token"));
+    if (!JWTToken) {
+        navigate('/login', replace)
+    }
 
     const [user, setUser] = useState(null);
     const [quizzes, setQuizzes] = useState(null);
@@ -66,7 +71,6 @@ const Dashboard = () => {
     useEffect(() => {
         // /api/quizzes/:stream
         if (gotUserData) {
-            console.log(user);
             fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/quizzes/${
                     user.streamId._id
