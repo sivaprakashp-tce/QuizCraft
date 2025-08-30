@@ -18,11 +18,11 @@ function Signup() {
     const [instutionLoading, setInstitutionLoading] = useState(true);
     const [streamLoading, setStreamLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [emailAlreadyPresent, setEmailAlreadyPresent] = useState(false)
 
     if (localStorage.getItem('token'))  { navigate('/dashboard', replace) }
 
     const onSubmit = (data) => {
-        console.log(data)
         fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, {
             method: "POST",
             headers: {
@@ -34,14 +34,23 @@ function Signup() {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    throw new Error("Signup Failed");
+                    return res.json().then((res) => {
+                        if (res.error === "USER_EXISTS") {
+                            setEmailAlreadyPresent(true);
+                            throw new Error("Email has already been used");
+                        } else {
+                            throw new Error("Signup Failed");
+                        }
+                    });
                 }
             })
             .then((res) => {
                 localStorage.setItem("token", JSON.stringify(res.token));
+                setRegistered(true);
             })
-            .catch((err) => console.log(err));
-        setRegistered(true);
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     // Generate falling "QUIZCRAFT" letters
@@ -246,6 +255,12 @@ function Signup() {
                                 </p>
                             )}
                         </div>
+
+                        {emailAlreadyPresent && (
+                            <div className="border-2 rounded-xl border-red-400 bg-red-200 text-red-700 font-medium p-5">
+                                <h4 className="">Another account with the given E-mail exists. <br />Please try again with another E-Mail.</h4>
+                            </div>
+                        )}
 
                         {/* Register Button */}
                         <button
