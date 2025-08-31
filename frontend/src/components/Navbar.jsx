@@ -1,8 +1,10 @@
+
+
 //Navbar for registered users
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import {websiteLogo} from "../assets";
+import { Menu, X, User } from "lucide-react";
+import { websiteLogo } from "../assets";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -13,27 +15,19 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const menuItems = [
-    "Home",
-    "About",
-    "Quizzes",
-    "Contact",
-  ];
+  const menuItems = ["Home", "About", "Quizzes", "Contact"];
 
   return (
     <nav className="relative w-full bg-black text-white shadow-md">
       <div className="relative z-10 flex items-center justify-between px-6 py-4">
-        <div className="logo-wrapper">
-          <a href="/" className="flex items-center gap-2">
-            <img
-              src={websiteLogo}
-              alt="QuizCraft Logo"
-              className="w-16 h-16 rounded-full hover:border-2 border-white cursor-pointer"
-            />
-            <h2 className="text-3xl font-bold text-yellow-400 md:text-4xl">Quiz Craft</h2>
-          </a>
-        </div>
+        {/* Logo */}
+        <img
+          src={websiteLogo}
+          alt="QuizCraft Logo"
+          className="w-16 h-16 rounded-full hover:border-2 border-white cursor-pointer"
+        />
 
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-12 text-lg font-semibold">
           {menuItems.map((item, index) => (
             <Link
@@ -63,13 +57,36 @@ const Navbar = () => {
           ))}
         </div>
 
-        <button
-          onClick={handleLogout}
-          className="hidden md:block px-5 py-2 rounded-lg bg-[#D4A981] text-black font-bold hover:bg-white transition-all"
-        >
-          Log out
-        </button>
+        {/* Right Side Buttons (Desktop) */}
+        <div className="hidden md:flex items-center space-x-6">
+          {/* Profile Icon with hover label */}
+          <div className="relative group">
+            <Link
+              to="/profile"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-[#D4A981] text-black hover:bg-white transition-all cursor-pointer"
+            >
+              <User size={22} />
+            </Link>
+            {/* Hover Label */}
+            <span
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap 
+                         bg-white text-black text-sm font-medium px-2 py-1 rounded-lg 
+                         opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+            >
+              Profile
+            </span>
+          </div>
 
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="px-5 py-2 rounded-lg bg-[#D4A981] text-black font-bold hover:bg-white transition-all"
+          >
+            Log out
+          </button>
+        </div>
+
+        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-white"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -78,6 +95,7 @@ const Navbar = () => {
         </button>
       </div>
 
+      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-black flex flex-col items-center space-y-6 py-6">
           {menuItems.map((item, index) => (
@@ -106,6 +124,16 @@ const Navbar = () => {
             </Link>
           ))}
 
+          {/* Profile Icon in Mobile */}
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 text-lg hover:text-[#D4A981] transition-colors"
+            onClick={() => setMenuOpen(false)}
+          >
+            <User size={24} /> <span>Profile</span>
+          </Link>
+
+          {/* Logout Button */}
           <button
             onClick={() => {
               setMenuOpen(false);
@@ -122,3 +150,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

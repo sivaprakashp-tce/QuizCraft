@@ -4,6 +4,7 @@ import QuizIntro from './pages/QuizIntro';
 import QuizQuestion from './pages/QuizQuestion';
 import Home from "./pages/Home" ;
 import Login from "./pages/Login"; 
+import Profile from "./pages/Profile"; 
 import Signup from "./pages/Signup";
 import QuizResult from './pages/QuizResult';
 import Dashboard from './pages/Dashboard';
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path='/quiz/:quizId' element={<QuizIntro />} />
                 <Route path='/quiz/question/:number' element={<QuizQuestion />} />
                 <Route path='/quiz/result' element={<QuizResult />} />

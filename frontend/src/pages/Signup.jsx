@@ -313,22 +313,22 @@ function Signup() {
                                 Registration Complete!
                             </motion.h2>
 
-                            {/* Continue Button */}
-                            <motion.button
-                                initial={{ y: 50, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 1, duration: 0.6 }}
-                                className="mt-6 px-6 py-2 bg-[#D4A981] text-white font-semibold rounded-lg hover:bg-[#c99767] transition"
-                                onClick={() => navigate("/dashboard")}
-                            >
-                                Continue
-                            </motion.button>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-        </header>
-    );
+              {/* Continue Button */}
+              <motion.button
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1, duration: 0.6 }}
+                className="mt-6 px-6 py-2 bg-[#D4A981] text-white font-semibold rounded-lg hover:bg-[#c99767] transition"
+                onClick={() => navigate("/quiz")}
+              >
+                Continue
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </header>
+  );
 }
 
 export default Signup;
