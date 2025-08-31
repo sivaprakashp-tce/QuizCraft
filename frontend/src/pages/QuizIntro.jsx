@@ -28,7 +28,8 @@ const QuizContainer = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    const JWTToken = import.meta.env.VITE_JWTToken;
+    const JWTToken = JSON.parse(localStorage.getItem('token'));
+    
 
     useEffect(() => {
         // clear only quiz-related sessionStorage keys

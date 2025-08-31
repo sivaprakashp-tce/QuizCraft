@@ -9,6 +9,7 @@ import QuizResult from './pages/QuizResult';
 import Dashboard from './pages/Dashboard';
 import NotFound from './components/NotFound.jsx'
 import CreateQuiz from './pages/CreateQuiz.jsx';
+import CreateQuizQuestion from './pages/CreateQuizQuestion.jsx';
 function App() {
   return (
     <React.Fragment>
@@ -21,7 +22,8 @@ function App() {
                 <Route path='/quiz/:quizId' element={<QuizIntro />} />
                 <Route path='/quiz/question/:number' element={<QuizQuestion />} />
                 <Route path='/quiz/result' element={<QuizResult />} />
-                <Route path='/quiz/create' element={<CreateQuiz />} />
+                <Route path='/create/quiz' element={<CreateQuiz />} />
+                <Route path='/create/question/:quizId' element={<CreateQuizQuestion />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>

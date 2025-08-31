@@ -23,7 +23,7 @@ const QuizQuestion = () => {
 };
 
 const Question = () => {
-    const JWTToken = import.meta.env.VITE_JWTToken;
+    const JWTToken = JSON.parse(localStorage.getItem('token'));
     const quizNavButton = "bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-full font-bold hover:from-purple-500 hover:to-blue-500 transform hover:scale-105 mystical-glow"
 
     const navigate = useNavigate();
