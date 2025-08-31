@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -18,6 +18,10 @@ const CreateQuizQuestion = () => {
 
 const GetQuestion = () => {
     const { quizId } = useParams();
+    const [quesAdded, setQuesAdded] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error , setError] = useState(false)
+    const JWTToken = JSON.parse(localStorage.getItem('token'))
 
     const {
         register,
@@ -26,16 +30,46 @@ const GetQuestion = () => {
     } = useForm();
 
     const onSubmit = (data) => {
+        setLoading(true)
         let body = {
-            quizId,
+            quizId: quizId,
             question: data.question,
             options: [data.option1, data.option2, data.option3, data.option4],
-            correctAnswer: data.correctAnswer,
-            pointsAwarded: data.pointsAwarded,
+            correctAnswer: Number(data.correctAnswer),
+            pointsAwarded: Number(data.pointsAwarded),
             questionType: "multiple-choice",
         };
-        console.log(body)
+
+        // console.log(JSON.stringify(body))
+        
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/question`, {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${JWTToken}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body)
+        }).then((res) => {
+            if (!res.ok) {
+                setError(true)
+                throw new Error("Question Not Added")
+            } else {
+                return res.json()
+            }
+        }).then((res) => {
+            setLoading(false)
+            setQuesAdded(true)
+        }).catch((err) => {
+            setError(true)
+            console.log("Error Found: ", err)
+        })
     };
+
+    if (loading) return <div className="">Loading...</div>
+
+    if (error) return <div className="">Error Raised</div>
+
+    if (quesAdded) return <QuesAddedeMsg />
 
     return (
         <React.Fragment>
@@ -102,15 +136,20 @@ const GetQuestion = () => {
                                 />
                             </div>
                         </div>
-                        <input
-                            type="number"
-                            name="pointsAwarded"
-                            id=""
-                            placeholder="Enter Points for the Question"
-                            className="border-2 border-black p-2"
-                            required
-                            {...register("pointsAwarded")}
-                        />
+                        <div className="points-awarded-cont">
+                            <label htmlFor="pointsAwarded">Enter Points for the Question</label>
+                            <input
+                                type="number"
+                                name="pointsAwarded"
+                                id="pointsAwarded"
+                                placeholder="Points"
+                                className="border-2 border-black p-2"
+                                required
+                                {...register("pointsAwarded")}
+                                min={1}
+                                max={100}
+                            />
+                        </div>
                         <div className="correct-answer-cont">
                             <div className="">
                                 <input
@@ -166,9 +205,10 @@ const GetQuestion = () => {
                                 </label>
                             </div>
                         </div>
+
                         <button
                             type="submit"
-                            className="bg-black text-white font-medium p-3 rounded-xl"
+                            className="bg-black text-white font-medium p-3 rounded-xl cursor-pointer"
                         >
                             + Add Question
                         </button>
@@ -178,5 +218,17 @@ const GetQuestion = () => {
         </React.Fragment>
     );
 };
+
+const QuesAddedeMsg = () => {
+    const {quizId} = useParams();
+    return (
+        <React.Fragment>
+            <h2 className="">Question was added successfully</h2>
+            <div className="links flex flex-col gap-5 justify-center items-center">
+                <a href="/dashboard">Finished</a><a href={`/create/question/${quizId}`}>Add Another Question</a>
+            </div>
+        </React.Fragment>
+    )
+}
 
 export default CreateQuizQuestion;

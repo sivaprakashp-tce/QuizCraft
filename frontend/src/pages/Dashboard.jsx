@@ -192,7 +192,7 @@ const QuizListDisplay = ({ quizlist }) => {
                 <h2 className="text-2xl lg:text-3xl text-amber-300 font-semibold p-2 border-b-2 border-amber-300 w-fit mb-10">
                     Quizzes for you
                 </h2>
-                <div className="flex flex-col items-start gap-10">
+                <div className="flex flex-col lg:grid grid-cols-2 gap-10">
                     {quizlist.map((quiz) => (
                         <Quizcard key={quiz._id} quiz={quiz} />
                     ))}
@@ -203,6 +203,9 @@ const QuizListDisplay = ({ quizlist }) => {
 };
 
 const Quizcard = ({ quiz }) => {
+    if (quiz.numberOfQuestions == 0) {
+        return null
+    } 
     return (
         <React.Fragment>
             <a
