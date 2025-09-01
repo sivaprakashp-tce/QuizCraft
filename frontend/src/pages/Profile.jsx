@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
-import websiteLogo from "../assets/websiteLogo.svg";
+import {websiteLogo} from "../assets";
 
 const Profile = () => {
   const [editMode, setEditMode] = useState(false);
