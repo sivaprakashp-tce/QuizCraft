@@ -4,9 +4,9 @@ import Footer from "../components/Footer";
 import { replace, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { getJWTToken } from "../utils";
 
 const CreateQuiz = () => {
-    // if (JSON.parse(localStorage.getItem('token'))) navigate('/login', replace);
     return (
         <React.Fragment>
             <Navbar />
@@ -30,7 +30,10 @@ const GetQuizDetails = () => {
 
     const navigate = useNavigate();
 
-    const JWTtoken = JSON.parse(localStorage.getItem('token'))
+    const JWTToken = getJWTToken()
+    if (!JWTToken) {
+        navigate('/login')
+    }
 
     const onSubmit = (data) => {
         data = {...data, institutionOnly: false}
@@ -39,7 +42,7 @@ const GetQuizDetails = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${JWTtoken}`
+                'Authorization': `Bearer ${JWTToken}`
             },
             body: JSON.stringify(data)
         }).then((res) => {

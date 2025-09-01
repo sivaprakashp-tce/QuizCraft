@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { replace, useNavigate } from "react-router-dom"; // for navigation
 import { websiteLogo } from "../assets";
+import { setJWTToken } from "../utils";
 
 function Signup() {
     const {
@@ -45,7 +46,7 @@ function Signup() {
                 }
             })
             .then((res) => {
-                localStorage.setItem("token", JSON.stringify(res.token));
+                setJWTToken(res.token)
                 setRegistered(true);
             })
             .catch((err) => {

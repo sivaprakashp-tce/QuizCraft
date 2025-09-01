@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SpellTab from "/src/components/SpellTab.jsx";
 import { replace, useNavigate } from "react-router-dom";
+import { getJWTToken } from "../utils";
 
 // Custom hook to handle the typewriter effect
 const useTypewriterEffect = (textToType, speed) => {
@@ -29,8 +30,9 @@ const useTypewriterEffect = (textToType, speed) => {
 };
 
 const Dashboard = () => {
+    sessionStorage.clear()
     const navigate = useNavigate()
-    const JWTToken = JSON.parse(localStorage.getItem("token"));
+    const JWTToken = getJWTToken();
     if (!JWTToken) {
         navigate('/login', replace)
     }

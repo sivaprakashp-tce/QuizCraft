@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { websiteLogo } from "../assets";
 import FallingLetters from "../components/FallingLetters";
 import { Link, replace, useNavigate } from "react-router-dom";
+import { setJWTToken } from "../utils";
 
 function Login() {
   const navigate = useNavigate()
@@ -33,7 +34,7 @@ function Login() {
                 }
             })
             .then((res) => {
-              localStorage.setItem('token', JSON.stringify(res.token))
+              setJWTToken(res.token)
               navigate('/dashboard');
             })
             .catch((err) => console.log(err));

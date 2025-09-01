@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar.jsx";
-import { useParams } from "react-router-dom";
-import Footer from '../components/Footer.jsx'
-import Fireflies from '../components/Fireflies.jsx'
-import Runes from '../components/Runes.jsx'
+import { Navigate, useParams } from "react-router-dom";
+import Footer from "../components/Footer.jsx";
+import Fireflies from "../components/Fireflies.jsx";
+import Runes from "../components/Runes.jsx";
+import { getJWTToken } from "../utils/index.js";
 
 const QuizIntro = () => {
     return (
@@ -13,7 +14,10 @@ const QuizIntro = () => {
                 <QuizContainer />
             </div>
             {/* Effects (same as QuizQuestion) */}
-            <div id="runes-container" className="fixed inset-0 pointer-events-none w-screen"></div>
+            <div
+                id="runes-container"
+                className="fixed inset-0 pointer-events-none w-screen"
+            ></div>
             <Runes />
             <div className="fireflies-container w-screen" />
             <Fireflies />
@@ -28,8 +32,10 @@ const QuizContainer = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    const JWTToken = JSON.parse(localStorage.getItem('token'));
-    
+    const JWTToken = getJWTToken();
+    if (!JWTToken) {
+        Navigate("/login");
+    }
 
     useEffect(() => {
         // clear only quiz-related sessionStorage keys
@@ -69,14 +75,24 @@ const QuizContainer = () => {
             .then((res) => {
                 if (res?.data?.questions) {
                     let answers = [];
-                    for (let i = 0; i < res.data.quizInfo.numberOfQuestions; i++) {
+                    for (
+                        let i = 0;
+                        i < res.data.quizInfo.numberOfQuestions;
+                        i++
+                    ) {
                         answers.push({
                             questionId: res.data.questions[i]._id,
                             selectedAnswer: -1,
                         });
                     }
-                    sessionStorage.setItem("Questions", JSON.stringify(res.data.questions));
-                    sessionStorage.setItem("SelectedAnswers", JSON.stringify(answers));
+                    sessionStorage.setItem(
+                        "Questions",
+                        JSON.stringify(res.data.questions)
+                    );
+                    sessionStorage.setItem(
+                        "SelectedAnswers",
+                        JSON.stringify(answers)
+                    );
                 }
             })
             .catch((err) => {
@@ -86,7 +102,12 @@ const QuizContainer = () => {
     }, [quizId]);
 
     if (error) return <div className="text-red-400">⚠ Error loading quiz.</div>;
-    if (loading) return <div className="text-gray-300 animate-pulse">✨ Preparing your codex...</div>;
+    if (loading)
+        return (
+            <div className="text-gray-300 animate-pulse">
+                ✨ Preparing your codex...
+            </div>
+        );
 
     return (
         <div
@@ -99,9 +120,11 @@ const QuizContainer = () => {
             <div className="text-5xl mb-2 animate-bounce">📜</div>
 
             {/* Big Title */}
-            <h1 className="text-5xl md:text-6xl font-extrabold 
+            <h1
+                className="text-5xl md:text-6xl font-extrabold 
                            bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-300 
-                           text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(236,72,153,0.7)]">
+                           text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(236,72,153,0.7)]"
+            >
                 {quizDetails.quizName}
             </h1>
 
