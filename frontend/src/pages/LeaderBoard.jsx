@@ -58,14 +58,16 @@ const LeaderboardTable = () => {
                         <th>Name</th>
                         <th className=''>Stream</th>
                         <th className=''>Institution</th>
+                        <th className=''>Stars</th>
                     </tr>
                     <tbody className=''>
                         {leaderboard.map((entry) => (
                             <tr className="" key={entry._id}>
-                                <td className=''>{entry.rank}</td>
-                                <td className='p-10'>{entry.name}</td>
+                                <td className='text-center'>{entry.rank}</td>
+                                <td className='p-3'>{entry.name}</td>
                                 <td className=''>{entry.stream}</td>
                                 <td className=''>{entry.institution}</td>
+                                <td className=''>{entry.starsGathered}</td>
                             </tr>
                         ))}
                     </tbody>
