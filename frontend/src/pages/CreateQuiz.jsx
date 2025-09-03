@@ -23,7 +23,7 @@ const RippleBackground = ({ setBgColor }) => {
     let bgColor = "#AD8B70";
     let animations = [];
 
-    const colors = ["#808080", "#000000", "#AD8B70", "#282741"];
+    const colors = ["#808080", "#800000", "#AD8B70", "#282741"];
     let colorIndex = 0;
     const colorPicker = {
       next: () => {
