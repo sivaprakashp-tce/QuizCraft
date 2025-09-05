@@ -13,6 +13,9 @@ import CreateQuiz from './pages/CreateQuiz.jsx';
 import CreateQuizQuestion from './pages/CreateQuizQuestion.jsx';
 import LeaderBoard from './pages/LeaderBoard.jsx';
 import UserAttempts from './pages/UserAttempts.jsx';
+import QuizzesFromUser from './pages/QuizzesFromUser.jsx';
+import EditQuestion from './pages/EditQuestion.jsx';
+import EditQuiz from './pages/EditQuiz.jsx';
 function App() {
   return (
     <React.Fragment>
@@ -30,6 +33,9 @@ function App() {
                 <Route path='/create/question/:quizId' element={<CreateQuizQuestion />} />
                 <Route path='/leaderboard' element={<LeaderBoard />} />
                 <Route path='/attempts/:userId' element={<UserAttempts />} />
+                <Route path='/user/quizzes' element={<QuizzesFromUser />} />
+                <Route path='/edit/question/:questionId' element={<EditQuestion />} />
+                <Route path='/edit/quiz/:quizId' element={<EditQuiz />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>

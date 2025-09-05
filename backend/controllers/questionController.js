@@ -47,7 +47,17 @@ export const createQuestion = catchAsync(async (req, res, next) => {
         questionType
     });
 
-    logger.info(`New question added to quiz ${quiz.quizName} by ${req.user.email}`);
+    // Update quiz statistics after adding question
+    const allQuestions = await Question.find({ quizId });
+    const totalPoints = allQuestions.reduce((sum, q) => sum + q.pointsAwarded, 0);
+    const numberOfQuestions = allQuestions.length;
+
+    await Quiz.findByIdAndUpdate(quizId, {
+        totalPoints,
+        numberOfQuestions
+    });
+
+    logger.info(`New question added to quiz ${quiz.quizName} by ${req.user.email}. Quiz updated: ${numberOfQuestions} questions, ${totalPoints} points`);
 
     res.status(201).json({
         success: true,
@@ -136,6 +146,16 @@ export const updateQuestion = catchAsync(async (req, res, next) => {
         runValidators: true
     });
 
+    // Update quiz statistics if points were changed
+    if (pointsAwarded) {
+        const allQuestions = await Question.find({ quizId: existingQuestion.quizId._id });
+        const totalPoints = allQuestions.reduce((sum, q) => sum + q.pointsAwarded, 0);
+        
+        await Quiz.findByIdAndUpdate(existingQuestion.quizId._id, {
+            totalPoints
+        });
+    }
+
     logger.info(`Question updated in quiz ${existingQuestion.quizId.quizName} by ${req.user.email}`);
 
     res.status(200).json({
@@ -164,9 +184,23 @@ export const deleteQuestion = catchAsync(async (req, res, next) => {
         return next(new AppError('You can only delete questions from your own quizzes', 403, 'ACCESS_DENIED'));
     }
 
+    const quizId = question.quizId._id;
+    const questionPoints = question.pointsAwarded;
+
+    // Delete the question
     await Question.findByIdAndDelete(id);
 
-    logger.info(`Question deleted from quiz ${question.quizId.quizName} by ${req.user.email}`);
+    // Update quiz statistics after deletion
+    const remainingQuestions = await Question.find({ quizId });
+    const totalPoints = remainingQuestions.reduce((sum, q) => sum + q.pointsAwarded, 0);
+    const numberOfQuestions = remainingQuestions.length;
+
+    await Quiz.findByIdAndUpdate(quizId, {
+        totalPoints,
+        numberOfQuestions
+    });
+
+    logger.info(`Question deleted from quiz ${question.quizId.quizName} by ${req.user.email}. Quiz updated: ${numberOfQuestions} questions, ${totalPoints} points`);
 
     res.status(200).json({
         success: true,

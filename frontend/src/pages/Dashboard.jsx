@@ -76,7 +76,7 @@ const Dashboard = () => {
             fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/quizzes/${
                     user.streamId._id
-                }`,
+                }?limit=100`,
                 {
                     headers: {
                         Authorization: `Bearer ${JWTToken}`,
