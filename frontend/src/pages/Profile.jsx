@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
-import {websiteLogo} from "../assets";
+import { Star, ArrowLeft } from "lucide-react";
+import { websiteLogo } from "../assets";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
+  const [floatAnimation, setFloatAnimation] = useState(true);
   const [details, setDetails] = useState({
     username: "John Doe",
     email: "user@email.com",
@@ -21,28 +24,22 @@ const Profile = () => {
   };
 
   const seasons = [
-    {
-      gradient: "linear-gradient(135deg, #ff6ec4 0%, #7873f5 100%)",
-      icon: "🌸",
-    },
-    {
-      gradient: "linear-gradient(135deg, #56ccf2 0%, #2f80ed 100%)",
-      icon: "❄️",
-    },
-    {
-      gradient: "linear-gradient(135deg, #f83600 0%, #f9d423 100%)",
-      icon: "☀️",
-    },
-    {
-      gradient: "linear-gradient(135deg, #c02425 0%, #f0cb35 100%)",
-      icon: "🍂",
-    },
+    { gradient: "linear-gradient(135deg, #ff6ec4 0%, #7873f5 100%)", icon: "🌸" },
+    { gradient: "linear-gradient(135deg, #56ccf2 0%, #2f80ed 100%)", icon: "❄️" },
+    { gradient: "linear-gradient(135deg, #f83600 0%, #f9d423 100%)", icon: "☀️" },
+    { gradient: "linear-gradient(135deg, #c02425 0%, #f0cb35 100%)", icon: "🍂" },
   ];
   const [bgIndex, setBgIndex] = useState(0);
 
+  // Stop floating effect after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setFloatAnimation(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
-    
+      {/* Season Background */}
       {seasons.map((s, i) => (
         <motion.div
           key={i}
@@ -54,6 +51,7 @@ const Profile = () => {
         />
       ))}
 
+      {/* Logo */}
       <div className="absolute top-6 left-8 z-20">
         <img
           src={websiteLogo}
@@ -62,6 +60,7 @@ const Profile = () => {
         />
       </div>
 
+      {/* Season Selector */}
       <div className="absolute top-6 right-8 flex gap-3 z-20">
         {seasons.map((s, i) => (
           <motion.button
@@ -78,45 +77,51 @@ const Profile = () => {
         ))}
       </div>
 
-    
+      {/* Profile Card */}
       <motion.div
-        className="relative bg-white/70 backdrop-blur-xl rounded-3xl p-12 w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl border border-white/30 z-10"
-        animate={{ y: [0, -15, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="relative bg-black/70 backdrop-blur-xl rounded-3xl p-12 w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl border border-white/30 z-10"
+        animate={{ y: floatAnimation ? [0, -15, 0] : [0] }}
+        transition={{ duration: 4, repeat: floatAnimation ? Infinity : 0, ease: "easeInOut" }}
       >
-        
-        <h1 className="text-black text-5xl font-extrabold text-center">
-          {details.username}
+        {/* Back Arrow */}
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="absolute top-6 left-6 flex items-center gap-2 text-white font-bold hover:text-amber-300"
+        >
+          <ArrowLeft size={24} /> Back
+        </button>
+
+        <h1 className="text-white text-5xl font-extrabold text-center mb-6">
+          Profile
         </h1>
 
-   
+        {/* Rating Stars */}
         <div className="flex justify-center mt-4 gap-2">
           {[...Array(5)].map((_, i) => (
             <Star key={i} fill={i < 3 ? "#ffd700" : "none"} stroke="black" />
           ))}
         </div>
 
-   
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 text-black text-xl">
+        {/* Profile Fields */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 text-white text-lg">
           {Object.entries(details).map(([key, value]) => (
             <div key={key} className="flex flex-col">
-              <span className="uppercase text-lg text-gray-700">{key}</span>
-              {editMode ? (
-                <input
-                  type="text"
-                  name={key}
-                  value={value}
-                  onChange={handleChange}
-                  className="bg-transparent border-b border-black text-xl focus:outline-none"
-                />
-              ) : (
-                <span className="mt-1">{value}</span>
-              )}
+              <label className="uppercase text-gray-300 mb-1">{key}</label>
+              <input
+                type="text"
+                name={key}
+                value={value}
+                onChange={handleChange}
+                readOnly={!editMode}
+                className={`w-full px-3 py-2 rounded-lg border border-gray-500 
+                  bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
+                  ${!editMode ? "cursor-not-allowed" : "bg-black/70"}`}
+              />
             </div>
           ))}
         </div>
 
-      
+        {/* Action Buttons */}
         <div className="mt-12 flex justify-center gap-6">
           {editMode ? (
             <>
@@ -154,6 +159,8 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
 
 
 

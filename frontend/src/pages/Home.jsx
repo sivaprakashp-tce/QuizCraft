@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import boyImage from "../assets/boy.svg";
 import { websiteLogo } from "../assets";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import Navbarhome from "../components/Navbarhome";
 import { replace, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -91,7 +91,7 @@ export default function Home() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
                 >
-                    <Navbarhome />
+                    <Navbar />
 
                     {/* Background layers: Stars, Fog, and Castle */}
                     <motion.div

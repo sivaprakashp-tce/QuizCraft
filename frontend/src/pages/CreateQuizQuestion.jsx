@@ -128,12 +128,14 @@ export default function CreateQuizQuestion() {
           animate={{ width: expanded ? "60%" : "100%" }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="h-full flex items-center justify-center bg-[#AD8B70]"
+          onClick={() => setExpanded(true)}
         >
           <div className="flex items-center gap-3 text-[8rem] font-extrabold text-black">
             <motion.span
               className="cursor-pointer"
               onHoverStart={() => setHoverC(true)}
               onHoverEnd={() => setHoverC(false)}
+
             >
               {hoverC ? "Create" : "C"}
             </motion.span>

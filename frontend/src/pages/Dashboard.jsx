@@ -113,7 +113,7 @@ const Dashboard = () => {
         <React.Fragment>
             <Navbar />
             <div 
-                className="w-screen min-h-[92vh] text-gray-200 bg-gray-950"
+                className="w-screen min-h-[92vh] text-gray-200 bg-gray-950 pt-24"
                 style={{
                     backgroundImage: `repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 10px), repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 10px)`
                 }}
