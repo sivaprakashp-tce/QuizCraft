@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useParams, useNavigate } from "react-router-dom";
 import { getJWTToken } from "../utils";
 import { useState } from "react";
 import { useEffect } from "react";
+import Navbar from "../components/Navbar";
 
 const EditQuestion = () => {
     return (

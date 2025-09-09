@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useParams } from "react-router-dom";
 import { getJWTToken } from "../utils";
 import anime from "animejs";
+import Navbar from "../components/Navbar";
 
 const ACCENT_COLOR = "#D2A679";
 

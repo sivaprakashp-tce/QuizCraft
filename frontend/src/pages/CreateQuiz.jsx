@@ -1,10 +1,11 @@
 import anime from "animejs/lib/anime.es.js";
 import React, { useEffect, useRef, useState } from "react";
-import Navbar from "../components/Navbar";
+
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getJWTToken } from "../utils";
+import Navbar from "../components/Navbar";
 
 // Helper: decide text color based on background
 const getTextColor = (bg) => {
