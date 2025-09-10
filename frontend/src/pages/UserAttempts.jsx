@@ -5,7 +5,7 @@ import { getJWTToken } from "../utils";
 import anime from "animejs";
 import Navbar from "../components/Navbar";
 
-const ACCENT_COLOR = "#D2A679";
+const ACCENT_COLOR = "#D2A679"; 
 
 const UserAttempts = () => {
     return (
