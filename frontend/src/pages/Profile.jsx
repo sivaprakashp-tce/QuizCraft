@@ -12,10 +12,7 @@ const Profile = () => {
     username: "John Doe",
     email: "user@email.com",
     stream: "Computer Science",
-    description: "Programming and software development",
-    institution: "MIT",
-    city: "Cambridge",
-    country: "USA",
+    institution: "MIT"
   });
 
   const handleChange = (e) => {
@@ -103,7 +100,7 @@ const Profile = () => {
         </div>
 
         {/* Profile Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 text-white text-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 m-10 text-white text-lg">
           {Object.entries(details).map(([key, value]) => (
             <div key={key} className="flex flex-col">
               <label className="uppercase text-gray-300 mb-1">{key}</label>
@@ -112,7 +109,7 @@ const Profile = () => {
                 name={key}
                 value={value}
                 onChange={handleChange}
-                readOnly={!editMode}
+                readOnly={(key == 'email') ? true : !editMode}
                 className={`w-full px-3 py-2 rounded-lg border border-gray-500 
                   bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
                   ${!editMode ? "cursor-not-allowed" : "bg-black/70"}`}
@@ -153,6 +150,11 @@ const Profile = () => {
             </motion.button>
           )}
         </div>
+      <div className="other-links w-full flex justify-evenly items-center p-10">
+        <a className="profile-links" href="/user/quizzes">My Quizzes</a>
+        <a className="profile-links" href="/create/quiz">Create Quiz</a>
+        <a className="profile-links" href="/leaderboard">Leaderboard</a>
+      </div>
       </motion.div>
     </div>
   );

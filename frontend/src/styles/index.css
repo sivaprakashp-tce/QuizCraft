@@ -46,3 +46,7 @@ html {
 .input-field-wrapper {
   @apply flex justify-between items-center w-full
 }
+
+.profile-links{
+  @apply bg-white text-black font-semibold p-4 text-lg rounded-xl hover:bg-black hover:text-white transition-colors
+}

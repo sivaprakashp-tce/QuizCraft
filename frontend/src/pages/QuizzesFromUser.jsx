@@ -11,7 +11,7 @@ const QuizzesFromUser = () => {
   return (
     <React.Fragment>
         <Navbar />
-        <div className="w-screen min-h-screen">
+        <div className="mt-28 w-screen min-h-screen">
             <UserQuizList />
         </div>
         <Footer />

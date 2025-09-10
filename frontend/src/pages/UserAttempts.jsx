@@ -11,7 +11,7 @@ const UserAttempts = () => {
     return (
         <>
             <Navbar />
-            <div className="w-screen min-h-screen flex justify-center items-center bg-[#0E0E0E]">
+            <div className="mt-28 w-screen min-h-screen flex justify-center items-center bg-[#0E0E0E]">
                 <Attempts />
             </div>
             <Footer />
