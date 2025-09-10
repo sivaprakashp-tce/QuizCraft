@@ -11,7 +11,7 @@ const QuizQuestion = () => {
     return (
         <React.Fragment>
             <Navbar />
-            <div className="mt-28 w-screen h-[92vh] flex justify-center items-center">
+            <div className="mt-24 w-screen h-[92vh] flex justify-center items-center">
                 <Question />
             </div>
             <div

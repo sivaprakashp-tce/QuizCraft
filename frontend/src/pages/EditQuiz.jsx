@@ -5,12 +5,13 @@ import { getJWTToken } from "../utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 const EditQuiz = () => {
     return (
         <React.Fragment>
             <Navbar />
-            <div className="w-screen min-h-screen">
+            <div className="mt-24 w-screen min-h-screen bg-gradient-to-br from-black via-[#120f28] to-[#2c1e1e] text-gray-200">
                 <QuizDetails />
             </div>
             <Footer />
@@ -42,7 +43,7 @@ const QuizDetails = () => {
                 if (!res.ok) {
                     setLoading(false);
                     setError(true);
-                    throw new Error("The is not fetched");
+                    throw new Error("The scroll is not fetched");
                 } else {
                     return res.json();
                 }
@@ -56,11 +57,10 @@ const QuizDetails = () => {
             .catch((err) => {
                 setLoading(false);
                 setError(true);
-                console.log("Error in fetching question: ", err);
+                console.log("Error in fetching scroll: ", err);
             });
     }, [JWTToken, quizId]);
 
-    // Handle form submission
     const handleUpdateQuiz = (e) => {
         e.preventDefault();
         setUpdating(true);
@@ -83,7 +83,7 @@ const QuizDetails = () => {
                 if (!res.ok) {
                     setUpdating(false);
                     setError(true);
-                    throw new Error("Quiz update failed");
+                    throw new Error("Scroll update failed");
                 } else {
                     return res.json();
                 }
@@ -93,94 +93,93 @@ const QuizDetails = () => {
                 setUpdateSuccess(true);
                 setTimeout(() => {
                     setUpdateSuccess(false);
-                    navigate(-1); // Go back to previous page
+                    navigate(-1);
                 }, 2000);
             })
             .catch((err) => {
                 setUpdating(false);
                 setError(true);
-                console.log("Error updating Quiz: ", err);
+                console.log("Error updating Scroll: ", err);
             });
     };
 
-    if (loading) return <div className="text-center py-8">Loading...</div>;
-    if (error)
-        return (
-            <div className="text-center py-8 text-red-500">
-                Error loading Quiz!
-            </div>
-        );
-    if (updating)
-        return <div className="text-center py-8">Updating Quiz...</div>;
-    if (updateSuccess)
-        return (
-            <div className="text-center py-8 text-green-500">
-                Quiz updated successfully!
-            </div>
-        );
+    if (loading) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-gray-300">Unfurling the ancient scroll...</div>;
+    if (error) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-red-500">A magical glyph has been corrupted. The scroll cannot be read.</div>;
+    if (updating) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-[#E5C397]">Scribing the new incantations...</div>;
+    if (updateSuccess) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-green-500">The scroll has been magically updated!</div>;
 
     return (
-        <React.Fragment>
-            <div className="edit-quiz-wrapper">
-                <h2 className="text-2xl font-bold mb-6 text-center">
-                    Edit Question
+        <motion.div
+            className="w-full max-w-2xl mx-auto py-12 px-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+        >
+            <motion.div
+                className="bg-black/40 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-[#AD8B70]"
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <h2 className="text-3xl md:text-4xl font-bold text-[#E5C397] mb-6 text-center font-serif">
+                    Edit the Ancient Scroll
                 </h2>
+                <p className="text-center text-gray-400 mb-8 italic">
+                    "I solemnly swear that I am up to no good." Update the secrets held within this magical document.
+                </p>
                 <form onSubmit={handleUpdateQuiz} className="space-y-6">
-                    <div className="question-data">
-                        <div className="mb-4">
-                            <label
-                                htmlFor="question"
-                                className="block text-sm font-medium mb-2"
-                            >
-                                Question:
-                            </label>
-                            <input
-                                type="text"
-                                id="question"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={quizTitle}
-                                onChange={(e) => setQuizTitle(e.target.value)}
-                                required
-                            />
-                        </div>
+                    <div>
+                        <label
+                            htmlFor="quizTitle"
+                            className="block text-lg font-medium text-gray-300 mb-2"
+                        >
+                            Scroll's Title:
+                        </label>
+                        <input
+                            type="text"
+                            id="quizTitle"
+                            className="w-full p-3 bg-white/10 border border-[#AD8B70] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E5C397] transition-colors"
+                            value={quizTitle}
+                            onChange={(e) => setQuizTitle(e.target.value)}
+                            required
+                        />
+                    </div>
 
-                        <div className="mb-4">
-                            <label
-                                htmlFor="question"
-                                className="block text-sm font-medium mb-2"
-                            >
-                                Question:
-                            </label>
-                            <input
-                                type="text"
-                                id="question"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={quizDescription}
-                                onChange={(e) => setQuizDescription(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                            
-                        <div className="flex gap-4 justify-center mt-8">
-                            <button
-                                type="button"
-                                onClick={() => navigate(-1)}
-                                className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                            >
-                                Update Question
-                            </button>
-                        </div>
+                    <div>
+                        <label
+                            htmlFor="quizDescription"
+                            className="block text-lg font-medium text-gray-300 mb-2"
+                        >
+                            Scroll's Description:
+                        </label>
+                        <textarea
+                            id="quizDescription"
+                            className="w-full p-3 bg-white/10 border border-[#AD8B70] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E5C397] transition-colors resize-none"
+                            rows="4"
+                            value={quizDescription}
+                            onChange={(e) => setQuizDescription(e.target.value)}
+                            required
+                        />
+                    </div>
+                        
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="px-6 py-3 bg-gray-600 text-white rounded-lg font-bold hover:bg-gray-700 hover:scale-105 transition-transform"
+                        >
+                            Retreat
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-6 py-3 bg-green-700 text-white rounded-lg font-bold hover:bg-green-800 hover:scale-105 transition-transform"
+                        >
+                            Scribe Incantation
+                        </button>
                     </div>
                 </form>
-            </div>
-        </React.Fragment>
+            </motion.div>
+        </motion.div>
     );
 };
 

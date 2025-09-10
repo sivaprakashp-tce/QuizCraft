@@ -1,19 +1,23 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import { useEffect } from 'react'
-import { getJWTToken } from '../utils'
-import { useState } from 'react'
-import Quiz from '../../../backend/models/Quiz'
-import { replace, useNavigate } from 'react-router-dom'
+import React from 'react';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { useEffect, useState } from 'react';
+import { getJWTToken } from '../utils';
+import { motion } from "framer-motion";
+import anime from 'animejs/lib/anime.es.js';
+import { useNavigate } from 'react-router-dom';
 
 const QuizzesFromUser = () => {
   return (
     <React.Fragment>
         <Navbar />
-        <div className="mt-28 w-screen min-h-screen">
+        <motion.div
+            className="mt-24 w-screen min-h-screen bg-gradient-to-br from-black via-[#120f28] to-[#2c1e1e] text-gray-200"
+            initial="hidden"
+            animate="visible"
+        >
             <UserQuizList />
-        </div>
+        </motion.div>
         <Footer />
     </React.Fragment>
   )
@@ -26,12 +30,23 @@ const UserQuizList = () => {
     const [selectedQuiz, setSelectedQuiz] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [loadingQuestions, setLoadingQuestions] = useState(false);
-    const [quizDeletionProcess, setQuizDeletionProcess] = useState(false)
-    const [isQuizDeleted, setIsQuizDeleted] = useState(false)
-    const [questionDeletionProcess, setQuestionDeletionProcess] = useState(false)
-    const [isQuestionDeleted, setIsQuestionDeleted] = useState(false)
+    const [quizDeletionProcess, setQuizDeletionProcess] = useState(false);
+    const [isQuizDeleted, setIsQuizDeleted] = useState(false);
+    const [questionDeletionProcess, setQuestionDeletionProcess] = useState(false);
+    const [isQuestionDeleted, setIsQuestionDeleted] = useState(false);
     const JWTToken = getJWTToken();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    // Move containerVariants here
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { 
+            opacity: 1, 
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_BACKEND_URL}/teacher/quizzes?limit=100`, {
@@ -59,7 +74,6 @@ const UserQuizList = () => {
         });
     }, [JWTToken]);
 
-    // Handler to show questions for a quiz
     const handleViewQuestions = (quizId) => {
         setSelectedQuiz(quizId);
         setLoadingQuestions(true);
@@ -88,11 +102,9 @@ const UserQuizList = () => {
         });
     };
 
-    // Handler to go back to quiz list
     const handleBackToQuizzes = () => {
         setSelectedQuiz(null);
         setQuestions([]);
-        // Refresh quiz list to show updated counts and points
         fetch(`${import.meta.env.VITE_BACKEND_URL}/teacher/quizzes?limit=100`, {
             method: 'GET',
             headers: {
@@ -116,30 +128,49 @@ const UserQuizList = () => {
     };
 
     const handleQuizDelete = (quizId) => {
-        setQuizDeletionProcess(true)
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${JWTToken}`
-            }
-        }).then((res) => {
-            if (!res.ok) {
-                setError(true)
-                throw new Error("Error in deleting quiz")
-            } else {
-                setQuizDeletionProcess(false)
-                setIsQuizDeleted(true)
-                setTimeout(() => {
-                    setIsQuizDeleted(false)
-                }, 2000);
-                return navigate('/user/quizzes', replace)
-            }
-        })
+        if (window.confirm("Are you sure you want to delete this scroll?")) {
+            setQuizDeletionProcess(true)
+            fetch(`${import.meta.env.VITE_BACKEND_URL}/quiz/${quizId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${JWTToken}`
+                }
+            }).then((res) => {
+                if (!res.ok) {
+                    setError(true)
+                    throw new Error("Error in deleting quiz")
+                } else {
+                    setQuizDeletionProcess(false)
+                    setIsQuizDeleted(true)
+                    setTimeout(() => {
+                        setIsQuizDeleted(false)
+                        window.location.reload();
+                    }, 2000);
+                }
+            })
+        }
     }
 
+    const animateIncinerate = (element) => {
+        if (!element) return;
+        anime({
+            targets: element,
+            opacity: [1, 0],
+            scale: [1, 0.8],
+            duration: 800,
+            easing: 'easeOutQuad',
+            complete: () => {
+                const questionId = element.dataset.questionId;
+                if (questionId) {
+                    handleQuestionDelete(questionId);
+                }
+            }
+        });
+    };
+
     const handleQuestionDelete = (questionId) => {
-        if (window.confirm('Are you sure you want to delete this question?')) {
+        if (window.confirm('Are you sure you want to incinerate this question?')) {
             setQuestionDeletionProcess(true);
             fetch(`${import.meta.env.VITE_BACKEND_URL}/question/${questionId}`, {
                 method: 'DELETE',
@@ -155,7 +186,6 @@ const UserQuizList = () => {
                 } else {
                     setQuestionDeletionProcess(false);
                     setIsQuestionDeleted(true);
-                    // Refresh questions list for current quiz
                     handleViewQuestions(selectedQuiz);
                     setTimeout(() => {
                         setIsQuestionDeleted(false);
@@ -169,40 +199,111 @@ const UserQuizList = () => {
         }
     }
 
-    if (quizDeletionProcess) return <div className="">Quiz is being Deleted</div>
-    if (isQuizDeleted) return <div className="">The quiz has been deleted</div>
+    // Anime.js hover effect for titles
+    const handleHoverEffect = (e) => {
+        anime({
+            targets: e.target,
+            color: '#E5C397',
+            textShadow: '0 0 10px #AD8B70',
+            easing: 'easeInOutQuad',
+            duration: 500,
+            direction: 'alternate',
+            loop: true
+        });
+    };
 
-    if (questionDeletionProcess) return <div className="">Question is being Deleted</div>
-    if (isQuestionDeleted) return <div className="">The Question has been deleted</div>
+    const handleHoverOut = (e) => {
+        anime.remove(e.target);
+        anime({
+            targets: e.target,
+            color: '#E5C397',
+            textShadow: 'none',
+            duration: 300,
+            easing: 'easeOutQuad'
+        });
+    };
 
-    if (loading) return <div>Loading quizzes...</div>;
-    if (error) return <div>Error loading quizzes.</div>;
+    const cardVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0 }
+    };
+
+    if (quizDeletionProcess) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-[#E5C397]">Casting the 'Incineratus' spell...</div>
+    if (isQuizDeleted) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-red-400">The spellbook has been erased from existence.</div>
+
+    if (questionDeletionProcess) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-[#E5C397]">Incinerating the question...</div>
+    if (isQuestionDeleted) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-red-400">The question has been incinerated.</div>
+
+    if (loading) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-gray-300">Summoning your scrolls...</div>;
+    if (error) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-red-500">A magical mishap has occurred. Try again.</div>;
 
     // If a quiz is selected, show its questions
     if (selectedQuiz) {
         return (
-            <div className="quiz-questions-section">
-                <button onClick={handleBackToQuizzes} className="mb-4 px-3 py-1 bg-gray-200 text-black rounded">Back to Quizzes</button>
-                <h2 className="text-xl font-bold mb-2">Questions for Quiz</h2>
+            <div className="max-w-4xl mx-auto py-12 px-4 md:px-6">
+                <motion.button 
+                    onClick={handleBackToQuizzes} 
+                    className="mb-6 px-4 py-2 bg-[#8C7A6A] text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-transform"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                >
+                    Return to the Scroll Archive
+                </motion.button>
+                <motion.h2 
+                    className="text-3xl md:text-4xl font-bold text-[#E5C397] mb-6"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    Inscriptions on this Scroll
+                </motion.h2>
                 {loadingQuestions ? (
-                    <div>Loading questions...</div>
+                    <div className="text-gray-300">Unfurling the scroll...</div>
                 ) : (
-                    <div>
+                    <motion.div variants={containerVariants}>
                         {questions.length === 0 ? (
-                            <div>No questions found for this quiz.</div>
+                            <div className="text-gray-400 text-lg">No ancient runes or riddles have been inscribed on this scroll yet.</div>
                         ) : (
                             questions.map((q) => (
-                                <div key={q._id} className="border p-2 mb-2 rounded">
-                                    <div className="font-semibold">{q.question}</div>
-                                    <div>Points: {q.pointsAwarded}</div>
-                                    <div>Options: {q.options && q.options.join(', ')}</div>
-                                    <a href={`/edit/question/${q._id}`} className="mr-2 px-2 py-1 bg-blue-400 text-white rounded">Edit</a>
-                                    <button onClick={() => handleQuestionDelete(q._id)} className="px-2 py-1 bg-red-400 text-white rounded cursor-pointer">Delete</button>
-                                </div>
+                                <motion.div 
+                                    key={q._id} 
+                                    data-question-id={q._id}
+                                    className="border border-[#AD8B70] p-4 mb-4 rounded-xl bg-black/40 shadow-lg"
+                                    variants={cardVariants}
+                                >
+                                    <div 
+                                        className="font-semibold text-lg md:text-xl text-[#E5C397] cursor-pointer"
+                                        onMouseEnter={handleHoverEffect}
+                                        onMouseLeave={handleHoverOut}
+                                    >
+                                        {q.question}
+                                    </div>
+                                    <div className="text-gray-400">Merit Points: {q.pointsAwarded}</div>
+                                    <div className="text-gray-400">Answers: {q.options && q.options.join(', ')}</div>
+                                    <div className="flex flex-wrap gap-2 mt-4">
+                                        <a href={`/edit/question/${q._id}`} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:scale-105 transition-transform">Edit Riddle</a>
+                                        <button 
+                                            onClick={(e) => {
+                                                if (window.confirm('Are you sure you want to incinerate this question?')) {
+                                                    animateIncinerate(e.currentTarget.closest('div'));
+                                                }
+                                            }}
+                                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:scale-105 transition-transform"
+                                        >
+                                            Incinerate
+                                        </button>
+                                    </div>
+                                </motion.div>
                             ))
                         )}
-                        <a href={`/create/question/${selectedQuiz}`} className="inline-block mt-4 px-3 py-2 bg-green-500 text-white rounded">Add Question</a>
-                    </div>
+                        <motion.a 
+                            href={`/create/question/${selectedQuiz}`} 
+                            className="inline-block mt-6 px-6 py-3 bg-green-700 text-white rounded-lg font-bold hover:scale-105 transition-transform"
+                            whileHover={{ scale: 1.05, boxShadow: "0 0 15px #6ee7b7" }}
+                        >
+                            Inscribe a New Riddle
+                        </motion.a>
+                    </motion.div>
                 )}
             </div>
         );
@@ -210,29 +311,40 @@ const UserQuizList = () => {
 
     // Otherwise, show quiz list
     return (
-        <div className="user-quizzes-list">
-            <h2 className="text-xl font-bold mb-4">Your Quizzes</h2>
+        <div className="max-w-4xl mx-auto py-12 px-4 md:px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#AD8B70] mb-6 text-center">Your Magical Scroll Archive</h2>
             {quizzes.length === 0 ? (
-                <div>No quizzes found.</div>
+                <div className="text-gray-400 text-lg text-center">No scrolls found in your archive. Time to create some!</div>
             ) : (
-                quizzes.map((quiz) => (
-                    <div key={quiz._id} className="border-2 border-green-500 p-3 mb-3 rounded">
-                        <div className="font-semibold text-lg">{quiz.quizName}</div>
-                        <div className="mb-1">{quiz.quizDescription}</div>
-                        <div className="mb-1">Total Points: {quiz.totalPoints}</div>
-                        <div className="mb-1">Questions: {quiz.numberOfQuestions}</div>
-                        <div className="flex gap-2 mt-2">
-                            <button onClick={() => handleViewQuestions(quiz._id)} className="px-2 py-1 bg-blue-500 text-white rounded cursor-pointer">View/Edit Questions</button>
-                            <a href={`/edit/quiz/${quiz._id}`} className="px-2 py-1 bg-yellow-500 text-white rounded">Edit Quiz</a>
-                            <a href={`/create/question/${quiz._id}`} className="px-2 py-1 bg-green-500 text-white rounded">Add Question</a>
-                            <button onClick={() => handleQuizDelete(quiz._id)} className="px-2 py-1 bg-red-400 text-white rounded cursor-pointer">Delete Quiz</button>
-                        </div>
-                    </div>
-                ))
+                <motion.div variants={containerVariants}>
+                    {quizzes.map((quiz, index) => (
+                        <motion.div 
+                            key={quiz._id} 
+                            className="border border-[#AD8B70] p-4 md:p-6 mb-4 md:mb-6 rounded-xl bg-black/40 shadow-xl"
+                            variants={cardVariants}
+                        >
+                            <div 
+                                className="font-semibold text-xl md:text-2xl text-[#E5C397] mb-2 cursor-pointer"
+                                onMouseEnter={handleHoverEffect}
+                                onMouseLeave={handleHoverOut}
+                            >
+                                {quiz.quizName}
+                            </div>
+                            <div className="text-gray-300 mb-2">{quiz.quizDescription}</div>
+                            <div className="text-gray-400 mb-1">Total Merit Points: {quiz.totalPoints}</div>
+                            <div className="text-gray-400 mb-1">Riddles: {quiz.numberOfQuestions}</div>
+                            <div className="flex flex-wrap gap-3 mt-4">
+                                <button onClick={() => handleViewQuestions(quiz._id)} className="px-4 py-2 bg-[#8C7A6A] text-white rounded-lg hover:scale-105 transition-transform">Examine Scroll</button>
+                                <a href={`/edit/quiz/${quiz._id}`} className="px-4 py-2 bg-[#AD8B70] text-black font-bold rounded-lg hover:scale-105 transition-transform">Edit Scroll</a>
+                                <a href={`/create/question/${quiz._id}`} className="px-4 py-2 bg-green-700 text-white rounded-lg hover:scale-105 transition-transform">Inscribe a Riddle</a>
+                                <button onClick={() => handleQuizDelete(quiz._id)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:scale-105 transition-transform">Erase Scroll</button>
+                            </div>
+                        </motion.div>
+                    ))}
+                </motion.div>
             )}
         </div>
     );
 }
-
 
 export default QuizzesFromUser

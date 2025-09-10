@@ -2,15 +2,15 @@ import React from "react";
 import Footer from "../components/Footer";
 import { useParams, useNavigate } from "react-router-dom";
 import { getJWTToken } from "../utils";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { motion } from "framer-motion";
 
 const EditQuestion = () => {
     return (
         <React.Fragment>
             <Navbar />
-            <div className="w-screen min-h-screen">
+            <div className="mt-24 w-screen min-h-screen bg-gradient-to-br from-black via-[#120f28] to-[#2c1e1e] text-gray-200">
                 <QuestionDetails />
             </div>
             <Footer />
@@ -47,30 +47,29 @@ const QuestionDetails = () => {
                 if (!res.ok) {
                     setLoading(false);
                     setError(true);
-                    throw new Error("The is not fetched");
+                    throw new Error("The ancient riddle is not fetched");
                 } else {
                     return res.json();
                 }
             })
             .then((res) => {
                 setQuestionData(res.data.question);
-                setQuestion(res.data.question.question)
-                setOption1(res.data.question.options[0])
-                setOption2(res.data.question.options[1])
-                setOption3(res.data.question.options[2])
-                setOption4(res.data.question.options[3])
-                setPointsAwarded(res.data.question.pointsAwarded)
-                setCorrectAnswer(res.data.question.correctAnswer)
+                setQuestion(res.data.question.question);
+                setOption1(res.data.question.options[0]);
+                setOption2(res.data.question.options[1]);
+                setOption3(res.data.question.options[2]);
+                setOption4(res.data.question.options[3]);
+                setPointsAwarded(res.data.question.pointsAwarded);
+                setCorrectAnswer(res.data.question.correctAnswer + 1);
                 setLoading(false);
             })
             .catch((err) => {
                 setLoading(false);
                 setError(true);
-                console.log("Error in fetching question: ", err);
+                console.log("Error in fetching riddle: ", err);
             });
     }, [JWTToken, questionId]);
 
-    // Handle form submission
     const handleUpdateQuestion = (e) => {
         e.preventDefault();
         setUpdating(true);
@@ -80,7 +79,7 @@ const QuestionDetails = () => {
             question: question,
             options: [option1, option2, option3, option4],
             correctAnswer: Number(correctAnswer) - 1,
-            pointsAwarded: Number(pointsAwarded)
+            pointsAwarded: Number(pointsAwarded),
         };
 
         fetch(`${import.meta.env.VITE_BACKEND_URL}/question/${questionId}`, {
@@ -89,13 +88,13 @@ const QuestionDetails = () => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${JWTToken}`,
             },
-            body: JSON.stringify(updateData)
+            body: JSON.stringify(updateData),
         })
             .then((res) => {
                 if (!res.ok) {
                     setUpdating(false);
                     setError(true);
-                    throw new Error("Question update failed");
+                    throw new Error("Riddle update failed");
                 } else {
                     return res.json();
                 }
@@ -105,149 +104,135 @@ const QuestionDetails = () => {
                 setUpdateSuccess(true);
                 setTimeout(() => {
                     setUpdateSuccess(false);
-                    navigate(-1); // Go back to previous page
+                    navigate(-1);
                 }, 2000);
             })
             .catch((err) => {
                 setUpdating(false);
                 setError(true);
-                console.log("Error updating question: ", err);
+                console.log("Error updating riddle: ", err);
             });
     };
 
-    if (loading) return <div className="text-center py-8">Loading...</div>;
-    if (error) return <div className="text-center py-8 text-red-500">Error loading question!</div>;
-    if (updating) return <div className="text-center py-8">Updating question...</div>;
-    if (updateSuccess) return <div className="text-center py-8 text-green-500">Question updated successfully!</div>;
+    if (loading) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-gray-300">Summoning the ancient riddle...</div>;
+    if (error) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-red-500">A magical glyph has been corrupted. The riddle cannot be read.</div>;
+    if (updating) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-[#E5C397]">Scribing the new runes...</div>;
+    if (updateSuccess) return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-green-500">The riddle has been magically updated!</div>;
 
     return (
-        <React.Fragment>
-            <div className="question-wrapper w-11/12 lg:w-5/6 mx-auto bg-white text-black rounded-xl p-5 my-8">
-                <h2 className="text-2xl font-bold mb-6 text-center">Edit Question</h2>
+        <motion.div
+            className="w-full max-w-3xl mx-auto py-12 px-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+        >
+            <motion.div
+                className="bg-black/40 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-[#AD8B70]"
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <h2 className="text-3xl md:text-4xl font-bold text-[#E5C397] mb-6 text-center font-serif">
+                    Edit the Ancient Riddle
+                </h2>
+                <p className="text-center text-gray-400 mb-8 italic">
+                    "Do not meddle in the affairs of wizards, for they are subtle and quick to anger." Edit the cryptic phrases to test a true wizard's mind.
+                </p>
                 <form onSubmit={handleUpdateQuestion} className="space-y-6">
-                    <div className="question-data">
-                        <div className="mb-4">
-                            <label htmlFor="question" className="block text-sm font-medium mb-2">
-                                Question:
+                    <div>
+                        <label htmlFor="question" className="block text-lg font-medium text-gray-300 mb-2">
+                            Riddle:
+                        </label>
+                        <input
+                            type="text"
+                            id="question"
+                            className="w-full p-3 bg-white/10 border border-[#AD8B70] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E5C397] transition-colors"
+                            value={question}
+                            onChange={(e) => setQuestion(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="options space-y-4">
+                        <h3 className="text-xl font-semibold text-gray-300">Answer Runes:</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {[1, 2, 3, 4].map((index) => (
+                                <div key={index}>
+                                    <label htmlFor={`option-${index}`} className="block text-sm font-medium text-gray-400 mb-1">
+                                        Rune {index}:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id={`option-${index}`}
+                                        className="w-full p-2 bg-white/10 border border-[#AD8B70] rounded text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E5C397] transition-colors"
+                                        value={
+                                            index === 1 ? option1 :
+                                            index === 2 ? option2 :
+                                            index === 3 ? option3 : option4
+                                        }
+                                        onChange={(e) => {
+                                            if (index === 1) setOption1(e.target.value);
+                                            if (index === 2) setOption2(e.target.value);
+                                            if (index === 3) setOption3(e.target.value);
+                                            if (index === 4) setOption4(e.target.value);
+                                        }}
+                                        required
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <div>
+                            <label htmlFor="correctAnswerInp" className="block text-lg font-medium text-gray-300 mb-2">
+                                The True Rune:
                             </label>
                             <input
-                                type="text"
-                                id="question"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={question}
-                                onChange={(e) => setQuestion(e.target.value)}
+                                type="number"
+                                id="correctAnswerInp"
+                                min="1"
+                                max="4"
+                                className="w-full p-3 bg-white/10 border border-[#AD8B70] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E5C397] transition-colors"
+                                value={correctAnswer}
+                                onChange={(e) => setCorrectAnswer(e.target.value)}
                                 required
                             />
                         </div>
-
-                        <div className="options space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label htmlFor="option-1" className="block text-sm font-medium mb-1">
-                                        Option 1:
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="option-1"
-                                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value={option1}
-                                        onChange={(e) => setOption1(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="option-2" className="block text-sm font-medium mb-1">
-                                        Option 2:
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="option-2"
-                                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value={option2}
-                                        onChange={(e) => setOption2(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="option-3" className="block text-sm font-medium mb-1">
-                                        Option 3:
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="option-3"
-                                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value={option3}
-                                        onChange={(e) => setOption3(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="option-4" className="block text-sm font-medium mb-1">
-                                        Option 4:
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="option-4"
-                                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value={option4}
-                                        onChange={(e) => setOption4(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                            <div>
-                                <label htmlFor="correctAnswerInp" className="block text-sm font-medium mb-1">
-                                    Correct Answer:
-                                </label>
-                                <input
-                                    type="number"
-                                    id="correctAnswerInp"
-                                    min="1"
-                                    max="4"
-                                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={correctAnswer}
-                                    onChange={(e) => setCorrectAnswer(e.target.value)}
-                                    required
-                                />
-                                <div>
-                                    <label htmlFor="pointsAwardedInp" className="block text-sm font-medium mb-1">
-                                        Points Awarded:
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="pointsAwardedInp"
-                                        min="1"
-                                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        value={pointsAwarded}
-                                        onChange={(e) => setPointsAwarded(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4 justify-center mt-8">
-                            <button
-                                type="button"
-                                onClick={() => navigate(-1)}
-                                className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                            >
-                                Update Question
-                            </button>
+                        <div>
+                            <label htmlFor="pointsAwardedInp" className="block text-lg font-medium text-gray-300 mb-2">
+                                Merit Points:
+                            </label>
+                            <input
+                                type="number"
+                                id="pointsAwardedInp"
+                                min="1"
+                                className="w-full p-3 bg-white/10 border border-[#AD8B70] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E5C397] transition-colors"
+                                value={pointsAwarded}
+                                onChange={(e) => setPointsAwarded(e.target.value)}
+                                required
+                            />
                         </div>
                     </div>
+
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="px-6 py-3 bg-gray-600 text-white rounded-lg font-bold hover:bg-gray-700 hover:scale-105 transition-transform"
+                        >
+                            Retreat
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-6 py-3 bg-green-700 text-white rounded-lg font-bold hover:bg-green-800 hover:scale-105 transition-transform"
+                        >
+                            Scribe New Runes
+                        </button>
+                    </div>
                 </form>
-            </div>
-        </React.Fragment>
+            </motion.div>
+        </motion.div>
     );
 };
 

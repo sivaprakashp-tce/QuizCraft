@@ -10,7 +10,7 @@ const QuizIntro = () => {
     return (
         <React.Fragment>
             <Navbar />
-            <div className="mt-28 w-screen h-[92vh] flex justify-center items-center relative overflow-hidden">
+            <div className="mt-24 w-screen h-[92vh] flex justify-center items-center relative overflow-hidden">
                 <QuizContainer />
             </div>
             {/* Effects (same as QuizQuestion) */}
