@@ -76,7 +76,7 @@ const Profile = () => {
 
       {/* Profile Card */}
       <motion.div
-        className="relative bg-black/70 backdrop-blur-xl rounded-3xl p-12 w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl border border-white/30 z-10"
+        className="relative bg-black/70 backdrop-blur-xl rounded-3xl p-10 w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl border border-white/30 z-10 bottom-5"
         animate={{ y: floatAnimation ? [0, -15, 0] : [0] }}
         transition={{ duration: 4, repeat: floatAnimation ? Infinity : 0, ease: "easeInOut" }}
       >
@@ -150,32 +150,36 @@ const Profile = () => {
             </motion.button>
           )}
         </div>
-      <div className="other-links w-full flex justify-evenly items-center p-10">
-        <a className="profile-links" href="/user/quizzes">My Quizzes</a>
-        <a className="profile-links" href="/create/quiz">Create Quiz</a>
-        <a className="profile-links" href="/leaderboard">Leaderboard</a>
-      </div>
       </motion.div>
+      {/* Separated Links Container */}
+      <div className="absolute bottom-5 w-full flex flex-col items-center gap-6 md:flex-row md:justify-center z-10">
+        <motion.a
+          href="/user/quizzes"
+          className="w-11/12 md:w-auto text-center bg-[#8b5cf6] text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          My Quizzes
+        </motion.a>
+        <motion.a
+          href="/create/quiz"
+          className="w-11/12 md:w-auto text-center bg-[#f59e0b] text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Create Quiz
+        </motion.a>
+        <motion.a
+          href="/leaderboard"
+          className="w-11/12 md:w-auto text-center bg-[#10b981] text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Leaderboard
+        </motion.a>
+      </div>
     </div>
   );
 };
 
 export default Profile;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
