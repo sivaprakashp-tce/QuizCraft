@@ -143,7 +143,7 @@ const Question = () => {
                             <button
                                 key={index}
                                 onClick={() => setSelectedOptionIndex(index)}
-                                className={`py-8 px-14 lg:w-auto text-xl border-2  text-white flex justify-center items-center w-full p-4 rounded-xl text-left font-semibold transition-all duration-300 answer-hover cursor-pointer mb-0 ${
+                                className={`py-8 px-14 lg:w-auto text-xl border-2  text-white flex justify-center items-center w-full h-full p-4 rounded-xl text-left font-semibold transition-all duration-300 answer-hover cursor-pointer mb-0 ${
                                     selectedOptionIndex == index
                                         ? "bg-yellow-600 text-white border-2 border-yellow-600"
                                         : "bg-gray-800 text-white border-2 border-gray-600 hover:border-yellow-400 hover:bg-gray-700"

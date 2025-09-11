@@ -39,7 +39,7 @@ const QuizResult = () => {
     return (
         <React.Fragment>
             <Navbar />
-            <div className="w-screen min-h-screen flex justify-center items-center flex-col gap-10 py-10 relative overflow-hidden bg-gray-950">
+            <div className="mt-24 w-screen min-h-screen flex justify-center items-center flex-col gap-10 py-10 relative overflow-hidden bg-gray-950">
                 <DisplayResult result={result} />
                 <AnswersReview answers={result.answersRecorded} />
             </div>
