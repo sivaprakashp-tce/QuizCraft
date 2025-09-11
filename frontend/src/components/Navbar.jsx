@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, Home, Info, Mail, BookCheck } from "lucide-react";
 import { websiteLogo } from "../assets";
 import { getJWTToken } from "../utils";
 
@@ -16,8 +16,12 @@ const Navbar = () => {
     navigate("/login", { replace: true });
   };
 
-  const commonMenu = ["Home", "About", "Contact"];
-  const registeredMenu = [...commonMenu, "Quizzes"];
+  const commonMenu = [
+    { name: "Home", icon: Home, path: "/" },
+    { name: "About", icon: Info, path: "/about" },
+    { name: "Contact", icon: Mail, path: "/contact" },
+  ];
+  const registeredMenu = [...commonMenu, { name: "Quizzes", icon: BookCheck, path: "/quizzes" }];
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black text-white shadow-md z-50">
@@ -32,17 +36,23 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-12 text-lg font-semibold">
-          {(isLoggedIn ? registeredMenu : commonMenu).map((item) => (
-            <Link
-              key={item}
-              to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-              className="relative px-3 py-1 group flex flex-col items-center"
-            >
-              <span className="relative z-20">{item}</span>
-              <span className="absolute -top-3 w-10 h-1 bg-[#D4A981] rounded opacity-0 group-hover:opacity-100 transition-all duration-300" />
-              <span className="absolute -top-1 w-24 h-24 scale-0 group-hover:scale-100 bg-gradient-to-b from-[#D4A981]/90 via-[#D4A981]/30 to-transparent rounded-b-full opacity-90 blur-md transition-transform duration-500" />
-            </Link>
-          ))}
+          {(isLoggedIn ? registeredMenu : commonMenu).map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="relative px-3 py-1 group flex flex-col items-center"
+              >
+                <div className="flex items-center space-x-2 relative z-20">
+                  <Icon size={20} />
+                  <span>{item.name}</span>
+                </div>
+                <span className="absolute -top-3 w-10 h-1 bg-[#D4A981] rounded opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                <span className="absolute -top-1 w-24 h-24 scale-0 group-hover:scale-100 bg-gradient-to-b from-[#D4A981]/90 via-[#D4A981]/30 to-transparent rounded-b-full opacity-90 blur-md transition-transform duration-500" />
+              </Link>
+            );
+          })}
         </div>
 
         {/* Right side buttons (Desktop) */}
@@ -92,18 +102,24 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-black flex flex-col items-center space-y-6 py-6">
-          {(isLoggedIn ? registeredMenu : commonMenu).map((item) => (
-            <Link
-              key={item}
-              to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-              onClick={() => setMenuOpen(false)}
-              className="relative px-3 py-1 group flex flex-col items-center text-lg"
-            >
-              <span className="relative z-20">{item}</span>
-              <span className="absolute -top-3 w-10 h-1 bg-[#D4A981] rounded opacity-0 group-hover:opacity-100 transition-all duration-300" />
-              <span className="absolute -top-1 w-24 h-24 scale-0 group-hover:scale-100 bg-gradient-to-b from-[#D4A981]/90 via-[#D4A981]/30 to-transparent rounded-b-full opacity-90 blur-md transition-transform duration-500" />
-            </Link>
-          ))}
+          {(isLoggedIn ? registeredMenu : commonMenu).map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                onClick={() => setMenuOpen(false)}
+                className="relative px-3 py-1 group flex flex-col items-center text-lg"
+              >
+                <div className="flex items-center space-x-2 relative z-20">
+                  <Icon size={20} />
+                  <span>{item.name}</span>
+                </div>
+                <span className="absolute -top-3 w-10 h-1 bg-[#D4A981] rounded opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                <span className="absolute -top-1 w-24 h-24 scale-0 group-hover:scale-100 bg-gradient-to-b from-[#D4A981]/90 via-[#D4A981]/30 to-transparent rounded-b-full opacity-90 blur-md transition-transform duration-500" />
+              </Link>
+            );
+          })}
 
           {isLoggedIn ? (
             <>
@@ -149,6 +165,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
