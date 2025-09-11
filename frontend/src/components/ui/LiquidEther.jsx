@@ -19,8 +19,8 @@ export default function LiquidEther({
   autoSpeed = 0.5,
   autoIntensity = 2.2,
   takeoverDuration = 0.25,
-  autoResumeDelay = 1000,
-  autoRampDuration = 0.6
+  autoResumeDelay = 0,
+  autoRampDuration = 0
 }) {
   const mountRef = useRef(null);
   const webglRef = useRef(null);

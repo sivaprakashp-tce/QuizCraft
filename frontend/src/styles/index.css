@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 @keyframes blink {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 1; }
@@ -49,4 +51,15 @@ html {
 
 .profile-links{
   @apply bg-white text-black font-semibold p-4 text-lg rounded-xl hover:bg-black hover:text-white transition-colors
+}
+
+.wobble-card-home {
+  @apply bg-yellow-800 h-full w-full
+}
+
+@theme {
+  --font-bungee: "Bungee Shade", sans-serif;
+  --font-macondo: "Macondo", cursive;
+  --font-caesar: "Caesar Dressing", system-ui;
+  --font-cinzel: "Cinzel", serif;
 }

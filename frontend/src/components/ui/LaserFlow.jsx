@@ -240,7 +240,7 @@ export const LaserFlow = ({
   dpr,
   mouseSmoothTime = 0.0,
   mouseTiltStrength = 0.01,
-  horizontalBeamOffset = 0.1,
+  horizontalBeamOffset = 0.3,
   verticalBeamOffset = -0.5,
   flowSpeed = 0.35,
   verticalSizing = 2.0,

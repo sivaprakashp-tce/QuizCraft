@@ -107,7 +107,7 @@ class AsciiFilter {
     this.pre.style.position = 'absolute';
     this.pre.style.left = '0';
     this.pre.style.top = '0';
-    this.pre.style.zIndex = '9';
+    this.pre.style.zIndex = '0';
     this.pre.style.backgroundAttachment = 'fixed';
     this.pre.style.mixBlendMode = 'difference';
   }
@@ -384,7 +384,7 @@ class CanvAscii {
 export default function ASCIIText({
   text = 'David!',
   asciiFontSize = 2,
-  textFontSize = 200,
+  textFontSize = 100,
   textColor = '#000000',
   planeBaseHeight = ((window.innerWidth > 768) ? 6 : 2),
   enableWaves = true
@@ -498,7 +498,7 @@ export default function ASCIIText({
           background-attachment: fixed;
           -webkit-text-fill-color: transparent;
           -webkit-background-clip: text;
-          z-index: 9;
+          z-index: 0;
           mix-blend-mode: difference;
         }
       `}</style>
