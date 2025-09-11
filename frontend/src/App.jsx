@@ -16,6 +16,7 @@ import UserAttempts from './pages/UserAttempts.jsx';
 import QuizzesFromUser from './pages/QuizzesFromUser.jsx';
 import EditQuestion from './pages/EditQuestion.jsx';
 import EditQuiz from './pages/EditQuiz.jsx';
+import NewHome from './pages/NewHome.jsx';
 function App() {
   return (
     <React.Fragment>
@@ -36,6 +37,7 @@ function App() {
                 <Route path='/user/quizzes' element={<QuizzesFromUser />} />
                 <Route path='/edit/question/:questionId' element={<EditQuestion />} />
                 <Route path='/edit/quiz/:quizId' element={<EditQuiz />} />
+                <Route path='/newhome' element={<NewHome />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>

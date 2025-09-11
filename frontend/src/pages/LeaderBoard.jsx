@@ -9,7 +9,7 @@ const LeaderBoard = () => {
     return (
         <React.Fragment>
             <Navbar />
-            <div className="w-screen min-h-screen flex flex-col items-center py-10 relative overflow-hidden bg-gray-950">
+            <div className="mt-24 w-screen min-h-screen flex flex-col items-center py-10 relative overflow-hidden bg-gray-950">
                 <Runes />
                 <LeaderboardCards />
             </div>

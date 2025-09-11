@@ -3,11 +3,15 @@ import { motion } from "framer-motion";
 import { Star, ArrowLeft } from "lucide-react";
 import { websiteLogo } from "../assets";
 import { useNavigate } from "react-router-dom";
+import { getJWTToken } from "../utils";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const JWTToken = getJWTToken();
   const [editMode, setEditMode] = useState(false);
   const [floatAnimation, setFloatAnimation] = useState(true);
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const [details, setDetails] = useState({
     username: "John Doe",
     email: "user@email.com",
@@ -33,6 +37,43 @@ const Profile = () => {
     const timer = setTimeout(() => setFloatAnimation(false), 5000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/user`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${JWTToken}`
+      }
+    }).then((res) => {
+      if (!res.ok) {
+        setLoading(false)
+        setError(true);
+        throw new Error('User details not fetched')
+      } else {
+        return res.json();
+      }
+    }).then((res) => {
+      setLoading(false)
+      setDetails({
+        username: res.data.user.name,
+        email: res.data.user.email,
+        stream: res.data.user.streamId.streamName,
+        institution: res.data.user.institutionId.name
+      })
+    }).catch((err) => {
+      setLoading(false)
+      setError(true)
+      console.log("Error raised during user details fetch: ", err)
+    })
+  }, [JWTToken])
+
+  const handleEditedDataSubmit = () => {
+    setEditMode(false)
+  }
+
+  if (loading) return <div className="">Loading...</div>
+  if (error) return <div className="">Error Raised</div>
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
@@ -101,21 +142,58 @@ const Profile = () => {
 
         {/* Profile Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 m-10 text-white text-lg">
-          {Object.entries(details).map(([key, value]) => (
-            <div key={key} className="flex flex-col">
-              <label className="uppercase text-gray-300 mb-1">{key}</label>
+            <div className="flex flex-col">
+              <label className="uppercase text-gray-300 mb-1">Name</label>
               <input
                 type="text"
-                name={key}
-                value={value}
+                name='Name'
+                value={details.username}
                 onChange={handleChange}
-                readOnly={(key == 'email') ? true : !editMode}
+                readOnly={!editMode}
                 className={`w-full px-3 py-2 rounded-lg border border-gray-500 
                   bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
                   ${!editMode ? "cursor-not-allowed" : "bg-black/70"}`}
               />
             </div>
-          ))}
+            <div className="flex flex-col">
+              <label className="uppercase text-gray-300 mb-1">EMail</label>
+              <input
+                type="email"
+                name='email'
+                value={details.email}
+                onChange={handleChange}
+                readOnly={false}
+                className={`w-full px-3 py-2 rounded-lg border border-gray-500 
+                  bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
+                  cursor-not-allowed`}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="uppercase text-gray-300 mb-1">Stream</label>
+              <input
+                type="text"
+                name='Name'
+                value={details.stream}
+                onChange={handleChange}
+                readOnly={!editMode}
+                className={`w-full px-3 py-2 rounded-lg border border-gray-500 
+                  bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
+                  ${!editMode ? "cursor-not-allowed" : "bg-black/70"}`}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="uppercase text-gray-300 mb-1">Institution</label>
+              <input
+                type="text"
+                name='Name'
+                value={details.institution}
+                onChange={handleChange}
+                readOnly={!editMode}
+                className={`w-full px-3 py-2 rounded-lg border border-gray-500 
+                  bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
+                  ${!editMode ? "cursor-not-allowed" : "bg-black/70"}`}
+              />
+            </div>
         </div>
 
         {/* Action Buttons */}
@@ -123,7 +201,7 @@ const Profile = () => {
           {editMode ? (
             <>
               <motion.button
-                onClick={() => setEditMode(false)}
+                onClick={() => handleEditedDataSubmit()}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="bg-black text-white px-8 py-3 rounded-full font-bold"
