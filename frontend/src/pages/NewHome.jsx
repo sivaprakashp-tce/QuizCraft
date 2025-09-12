@@ -9,6 +9,7 @@ import ASCIIText from "../components/ui/ASCIIText";
 import { WobbleCard } from "../components/ui/WobbleCard";
 import SplitText from "../components/ui/SplitText";
 import Footer from "../components/Footer";
+import { ContactForm } from "../components/Contact";
 
 const NewHome = () => {
     const items = [
@@ -72,7 +73,7 @@ const NewHome = () => {
                 <div className="lg:mt-24 lg:w-4/5 mx-auto h-full text-center flex flex-col gap-7">
                     <HeroSection />
                 </div>
-                <div style={{width: "100vw",height: "100vh",position: "absolute",zIndex: -1}}>
+                <div style={{ width: "100vw", height: "100vh", position: "absolute", zIndex: -1 }}>
                     <LiquidEther />
                 </div>
             </div>
@@ -85,7 +86,7 @@ const NewHome = () => {
                 </div>
             </div>
             <div className="relative w-screen min-h-screen">
-                <div style={{width: "100vw",height: "100vh",position: "absolute",overflow: "hidden"}} className="hidden lg:block">
+                <div style={{ width: "100vw", height: "100vh", position: "absolute", overflow: "hidden" }} className="hidden lg:block">
                     <LaserFlow />
                 </div>
                 <div className="w-screen h-screen">
@@ -113,16 +114,27 @@ const NewHome = () => {
                     <a href="/login" className="bg-black text-[#ffff00] hover:bg-transparent hover:text-black border-2 border-black px-5 py-2 rounded-xl text-2xl font-bold">Join Now</a>
                 </div>
             </div>
-            <div className="">
-                <h3 className="text-4xl font-medium p-4 pb-2 lg:relative lg:left-36 font-serif border-b-2 border-[#ffff00] w-fit">Creators</h3>
-                <div style={{width: "100vw",position: "relative",}} className="h-[400px] lg:h-auto p-5">
-                    <ChromaGrid
-                        items={items}
-                        radius={300}
-                        damping={0.45}
-                        fadeOut={0.6}
-                        ease="power3.out"
-                    />
+            <div className="contact-section-wrapper md:w-10/12 w-full min-h-[90vh] flex justify-center items-center mx-auto flex-col-reverse md:flex-row">
+                <div className="flex justify-center items-center flex-col w-1/2">
+                    <h3 className="text-4xl font-medium pb-2 lg:relative lg:left-36 font-serif border-b-2 border-[#ffff00] w-fit mx-auto">Creators</h3>
+                    <div style={{ position: "relative" }} className="h-[400px] lg:h-auto p-5">
+                        <ChromaGrid
+                            items={items}
+                            radius={300}
+                            damping={0.45}
+                            fadeOut={0.6}
+                            ease="power3.out"
+                        />
+                    </div>
+                </div>
+                <div className="md:w-1/2 pb-10">
+                    <div className="lander-wrapper h-24 m-14 flex flex-col justify-around items-center">
+                        <h1 className="font-bold text-3xl md:text-5xl text-white">Contact Us</h1>
+                        <h3 className="font-semibold text-slate-400 uppercase">Get in touch With us</h3>
+                    </div>
+                    <div className="contact-wrapper bg-white rounded-xl text-black md:w-10/12 w-full flex justify-center items-center mx-auto flex-col-reverse">
+                        <ContactForm />
+                    </div>
                 </div>
             </div>
             <Footer />
@@ -158,7 +170,7 @@ const HeroSection = () => {
     )
 }
 
-const WobbleCardContent = ({title, description}) => {
+const WobbleCardContent = ({ title, description }) => {
     return (
         <React.Fragment>
             <div className="cont w-full h-full p-5">
