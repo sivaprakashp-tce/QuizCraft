@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 const Profile = () => {
   const navigate = useNavigate();
   const JWTToken = getJWTToken();
+  const [userId, setUserId] = useState(null)
   const [editMode, setEditMode] = useState(false);
   const [floatAnimation, setFloatAnimation] = useState(true);
   const [institutions, setInstitutions] = useState(null);
@@ -65,6 +66,7 @@ const Profile = () => {
           throw new Error('User details not fetched');
         }
         const data = await res.json();
+        setUserId(data.data.user._id)
         setDetails({
           username: data.data.user.name,
           email: data.data.user.email,
@@ -373,14 +375,24 @@ const Profile = () => {
                 </motion.button>
               </>
             ) : (
-              <motion.button
-                onClick={() => setEditMode(true)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="bg-black text-white px-10 py-4 rounded-full font-bold text-lg"
-              >
-                Edit Profile
-              </motion.button>
+              <>
+                <motion.button
+                  onClick={() => setEditMode(true)}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="bg-black text-white px-10 py-4 rounded-full font-bold text-lg cursor-pointer"
+                >
+                  Edit Profile
+                </motion.button>
+                <motion.button
+                  onClick={() => navigate(`/attempts/${userId}`)}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="bg-black text-white px-10 py-4 rounded-full font-bold text-lg cursor-pointer"
+                >
+                  My Attempts
+                </motion.button>
+              </>
             )}
           </div>
         </div>

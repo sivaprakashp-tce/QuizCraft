@@ -35,7 +35,7 @@ const NewHome = () => {
         },
         {
             title: "Sivaprakash P",
-            subtitle: "Backend Engineer",
+            subtitle: "Web Developer",
             handle: "@sivaprakashp-tce",
             borderColor: "#3B82F6",
             gradient: "linear-gradient(145deg, #999, #000)",
