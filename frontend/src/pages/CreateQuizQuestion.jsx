@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import anime from "animejs";
@@ -93,39 +92,44 @@ export default function CreateQuizQuestion() {
     );
 
   if (quesAdded)
-  return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center bg-black gap-8">
-      <h2 className="text-xl text-white font-semibold">
-        Question Created Successfully
-      </h2>
-      <div className="flex flex-col gap-4 w-1/3">
-        {/* Finish Quiz Button */}
-        <a
-          href="/dashboard"
-          className="w-full py-4 text-center text-lg font-medium bg-white text-black rounded-lg hover:bg-gray-300 transition-colors"
-        >
-          FINISH QUIZ
-        </a>
+    return (
+      <div className="w-screen h-screen flex flex-col justify-center items-center bg-black gap-8">
+        <h2 className="text-xl text-white font-semibold">
+          Question Created Successfully
+        </h2>
+        <div className="flex flex-col gap-4 w-1/3">
+          {/* Finish Quiz Button */}
+          <a
+            href="/dashboard"
+            className="w-full py-4 text-center text-lg font-medium bg-white text-black rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            FINISH QUIZ
+          </a>
 
-        {/* Continue Quiz Button */}
-        <a
-          href={`/create/question/${quizId}`}
-          className="w-full py-4 text-center text-lg font-medium bg-transparent border-2 border-white text-white rounded-lg hover:bg-white hover:text-black transition-all relative group"
-        >
-          <span className="block group-hover:hidden">CONTINUE QUIZ</span>
-          <span className="hidden group-hover:block">ADD MORE QUESTIONS</span>
-        </a>
+          {/* Continue Quiz Button */}
+          <a
+            href={`/create/question/${quizId}`}
+            className="w-full py-4 text-center text-lg font-medium bg-transparent border-2 border-white text-white rounded-lg hover:bg-white hover:text-black transition-all relative group"
+          >
+            <span className="block group-hover:hidden">CONTINUE QUIZ</span>
+            <span className="hidden group-hover:block">ADD MORE QUESTIONS</span>
+          </a>
+        </div>
       </div>
-    </div>
-  );
-
+    );
 
   return (
     <div className="w-screen h-screen overflow-hidden">
       <div className="relative w-full h-full flex">
         {/* Left section */}
         <motion.div
-          animate={{ width: expanded ? "60%" : "100%" }}
+          animate={{
+            width: expanded
+              ? window.innerWidth < 640 // Tailwind 'sm' breakpoint is 640px
+                ? "0%"
+                : "60%"
+              : "100%",
+          }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="h-full flex items-center justify-center bg-[#AD8B70]"
           onClick={() => setExpanded(true)}
@@ -135,7 +139,6 @@ export default function CreateQuizQuestion() {
               className="cursor-pointer"
               onHoverStart={() => setHoverC(true)}
               onHoverEnd={() => setHoverC(false)}
-
             >
               {hoverC ? "Create" : "C"}
             </motion.span>
@@ -163,7 +166,7 @@ export default function CreateQuizQuestion() {
           {expanded && (
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: "40%" }}
+              animate={{ width: "100%" }}
               exit={{ width: 0 }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
               className="h-full bg-[#3E3630] flex flex-col items-center p-8 overflow-y-auto relative"
@@ -177,9 +180,7 @@ export default function CreateQuizQuestion() {
               </button>
 
               {/* Form */}
-              <h1 className="text-5xl font-bold text-white mb-8">
-                Question
-              </h1>
+              <h1 className="text-5xl font-bold text-white mb-8">Question</h1>
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full flex flex-col items-center"
