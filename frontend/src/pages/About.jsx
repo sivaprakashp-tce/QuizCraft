@@ -66,14 +66,14 @@ const About = () => {
               className="text-4xl md:text-5xl font-bold text-[#FFC107] font-serif mb-4 relative transition-transform duration-75 ease-out"
               style={{ transform: `translate3d(${headingParallax.x}px, ${headingParallax.y}px, 0)` }}
             >
-              About QuizCraft: Your Magical Journey
+              QuizCraft: The Quest for Knowledge
             </h1>
             <p 
               ref={subtitleRef} 
               className="text-lg md:text-xl text-gray-400 italic mb-12 relative transition-transform duration-75 ease-out"
               style={{ transform: `translate3d(${subtitleParallax.x}px, ${subtitleParallax.y}px, 0)` }}
             >
-              The secrets of the wizarding world await.
+              A magical platform powered by modern technology.
             </p>
           </div>
           
@@ -84,45 +84,68 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <section>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">Our Mission</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">Our Mission & Vision</h2>
               <p className="text-gray-300">
-                Welcome, young wizard, to the enchanting halls of **QuizCraft**—the premier destination for all aspiring witches and wizards to test their magical prowess. Our mission is to transport you from the mundane world into a realm of wonder and wisdom, where every question is a spell and every correct answer earns you a place among the brightest of your generation.
+                Our mission is to create a captivating and **magical quizzing experience** for enthusiasts of the wizarding world. We aim to blend the joy of discovery with robust, professional-grade technology. QuizCraft is designed to be more than a simple quiz site; it's a living, breathing digital realm where users can test their knowledge, track their progress, and contribute to a vibrant community.
+              </p>
+            </section>
+            
+            <section>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">The Platform</h2>
+              <p className="text-gray-300">
+                QuizCraft is a full-stack web application designed and built from the ground up. It provides a secure, reliable, and scalable platform for a range of users, from **students** and **teachers** to dedicated **admins**. Our system ensures a personalized experience, offering features like user profiles, real-time leaderboards, and detailed analytics for quiz creators.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">The Magic Behind the Quizzes</h2>
-              <p className="text-gray-300">
-                Here at QuizCraft, we believe that learning should be an adventure. Our quizzes are meticulously crafted to challenge your knowledge of spells, magical creatures, legendary artifacts, and the rich history of the wizarding world. Whether you're a first-year student or a seasoned professor, there's always something new to discover.
+              <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">Core Technology Stack</h2>
+              <p className="text-gray-300 mb-6">
+                Behind the scenes, QuizCraft is a powerful fusion of modern, industry-standard technologies.
               </p>
-            </section>
+              
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Frontend Section */}
+                <motion.div
+                  className="bg-black/50 p-6 rounded-xl border border-[#FFD700]"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <h3 className="text-xl font-bold text-[#FFC107] mb-2">Frontend: The Spellbook 🪄</h3>
+                  <p className="text-gray-400 mb-2">
+                    Our magical user interface is built for speed and immersion.
+                  </p>
+                  <ul className="list-disc list-inside text-gray-400 space-y-1">
+                    <li>**React & Vite:** A powerful, modern framework for a fast, responsive UI.</li>
+                    <li>**Tailwind CSS:** For a consistent, magical design system.</li>
+                    <li>**Framer Motion & Anime.js:** To create fluid, enchanting animations and transitions.</li>
+                    <li>**JWT-based Authentication:** Secure user sessions and role-based views.</li>
+                  </ul>
+                </motion.div>
 
-            <section>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">Our Features</h2>
-              <ul className="list-disc list-inside space-y-4 text-gray-300">
-                <li className="flex items-start">
-                  <span className="text-[#FFC107] font-bold mr-2 text-xl">&bull;</span>
-                  <div>
-                    <strong className="text-lg text-[#FFD700]">The Sorting Hat Quiz:</strong> Discover your true house! Our unique sorting algorithm analyzes your answers to determine whether you belong in Gryffindor, Hufflepuff, Ravenclaw, or Slytherin.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-[#FFC107] font-bold mr-2 text-xl">&bull;</span>
-                  <div>
-                    <strong className="text-lg text-[#FFD700]">Merit Points & House Cup:</strong> Compete against other players to earn merit points for your house. Every question you answer correctly contributes to your house's standing, bringing you one step closer to winning the coveted House Cup.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-[#FFC107] font-bold mr-2 text-xl">&bull;</span>
-                  <div>
-                    <strong className="text-lg text-[#FFD700]">Customizable Scrolls:</strong> For our most ambitious wizards, our "Create Your Own Scroll" feature allows you to craft your own quizzes and challenge your friends. Become a master Scribe and share your magical knowledge with the world.
-                  </div>
-                </li>
-              </ul>
+                {/* Backend Section */}
+                <motion.div
+                  className="bg-black/50 p-6 rounded-xl border border-[#FFD700]"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <h3 className="text-xl font-bold text-[#FFC107] mb-2">Backend: The Magical Nexus 🔮</h3>
+                  <p className="text-gray-400 mb-2">
+                    A secure and scalable API handles all platform logic and data.
+                  </p>
+                  <ul className="list-disc list-inside text-gray-400 space-y-1">
+                    <li>**Node.js & Express.js:** A robust and scalable foundation for our API.</li>
+                    <li>**MongoDB:** A flexible NoSQL database to store quizzes, questions, and user data.</li>
+                    <li>**JWT & Bcrypt:** Secure, token-based authentication with password hashing.</li>
+                    <li>**Role-Based Access Control:** Ensures a secure experience for all users.</li>
+                  </ul>
+                </motion.div>
+              </div>
             </section>
 
             <p className="text-center text-gray-400 italic pt-4">
-              So grab your wand, put on your robes, and prepare to embark on a quest for knowledge. The secrets of the wizarding world await!
+              QuizCraft is a project born out of passion and a commitment to quality. Thank you for joining our quest!
             </p>
           </motion.div>
         </motion.div>
