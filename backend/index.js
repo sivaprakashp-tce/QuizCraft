@@ -38,6 +38,7 @@ const corsOptions = {
         const allowedOrigins = [
             'http://localhost:5500',
             'http://localhost:5173',
+            'https://quizcraft-tce.netlify.app'
             // Add your production frontend URLs here
         ];
         

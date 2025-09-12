@@ -32,7 +32,7 @@ export const ContactForm = () => {
   return (
     <React.Fragment>
       <form className="w-4/5 h-full flex flex-col justify-around items-center" action="https://formsubmit.co/d2b37987e336eaae9eab03c4ce3a8f06" method="POST">
-        <input type="hidden" name="_next" value="http://localhost:5173/thank-you" />
+        <input type="hidden" name="_next" value="https://quizcraft-tce.netlify.app/thank-you" />
         <div className="contact-form-element">
           <label htmlFor="Name">
             Your Name<span className="text-red-600 font-semibold">*</span>
