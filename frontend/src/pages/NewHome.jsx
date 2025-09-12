@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import LiquidEther from "../components/ui/LiquidEther";
 import Navbar from "../components/Navbar";
 import ChromaGrid from "../components/ui/ChromaGrid";
@@ -11,8 +11,11 @@ import Footer from "../components/Footer";
 import { ContactForm } from "../components/Contact";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useLocation } from "react-router-dom";
 
 const NewHome = () => {
+    const contactRef = useRef(null);
+    const location = useLocation();
     const items = [
         {
             title: "Aswitha V",
@@ -66,6 +69,12 @@ const NewHome = () => {
             bg: ""
         }
     ]
+
+    useEffect(() => {
+        if (location.hash === '#contact' && contactRef.current) {
+          contactRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, [location.hash]);
 
     useGSAP(() => {
         gsap.from('.wobble-card-wrapper', {
@@ -131,7 +140,7 @@ const NewHome = () => {
                     <a href="/login" className="bg-black text-[#ffff00] hover:bg-transparent hover:text-black border-2 border-black px-5 py-2 rounded-xl text-2xl font-bold">Join Now</a>
                 </div>
             </div>
-            <div className="w-full h-full bg-black" id="contact" >
+            <div className="w-full h-full bg-black" id="contact" ref={contactRef}>
                 <div className="contact-section-wrapper bg-black md:w-10/12 w-full min-h-[90vh] flex justify-center items-center mx-auto flex-col-reverse md:flex-row">
                     <div className="flex justify-center items-center flex-col w-1/2">
                         <h3 className="text-4xl font-medium pb-2 font-serif border-b-2 border-[#ffff00]">Creators</h3>
