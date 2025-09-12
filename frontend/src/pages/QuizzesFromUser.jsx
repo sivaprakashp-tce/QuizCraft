@@ -6,18 +6,17 @@ import { getJWTToken } from '../utils';
 import { motion } from "framer-motion";
 import anime from 'animejs/lib/anime.es.js';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const QuizzesFromUser = () => {
   return (
     <React.Fragment>
         <Navbar />
-        <motion.div
-            className="mt-24 w-screen min-h-screen bg-gradient-to-br from-black via-[#120f28] to-[#2c1e1e] text-gray-200"
-            initial="hidden"
-            animate="visible"
-        >
+        <div className="mt-24 w-screen min-h-screen bg-gradient-to-br from-black via-[#120f28] to-[#2c1e1e] text-gray-200">
+          <div className="max-w-4xl mx-auto py-12 px-4 md:px-6">
             <UserQuizList />
-        </motion.div>
+          </div>
+        </div>
         <Footer />
     </React.Fragment>
   )
@@ -240,7 +239,7 @@ const UserQuizList = () => {
     // If a quiz is selected, show its questions
     if (selectedQuiz) {
         return (
-            <div className="max-w-4xl mx-auto py-12 px-4 md:px-6">
+            <div className="relative">
                 <motion.button 
                     onClick={handleBackToQuizzes} 
                     className="mb-6 px-4 py-2 bg-[#8C7A6A] text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-transform"
@@ -311,12 +310,18 @@ const UserQuizList = () => {
 
     // Otherwise, show quiz list
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 md:px-6">
+        <div className="relative">
             <h2 className="text-3xl md:text-4xl font-bold text-[#AD8B70] mb-6 text-center">Your Magical Scroll Archive</h2>
+            <Link
+              to="/create/quiz"
+              className="absolute top-0 right-0 px-6 py-3 bg-white text-black font-bold rounded-full shadow-lg hover:scale-105 transition-transform"
+            >
+              Create Quiz
+            </Link>
             {quizzes.length === 0 ? (
-                <div className="text-gray-400 text-lg text-center">No scrolls found in your archive. Time to create some!</div>
+                <div className="text-gray-400 text-lg text-center mt-20">No scrolls found in your archive. Time to create some!</div>
             ) : (
-                <motion.div variants={containerVariants}>
+                <motion.div variants={containerVariants} className="mt-20">
                     {quizzes.map((quiz, index) => (
                         <motion.div 
                             key={quiz._id} 

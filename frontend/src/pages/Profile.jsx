@@ -13,25 +13,27 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const [floatAnimation, setFloatAnimation] = useState(true);
   const [institutions, setInstitutions] = useState(null);
-    const [streams, setStreams] = useState(null);
-    const [instutionLoading, setInstitutionLoading] = useState(true);
-    const [streamLoading, setStreamLoading] = useState(true);
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-  const [updating, setUpdating] = useState(false)
-  const [updateSuccess, setUpdateSuccess] = useState(false)
+  const [streams, setStreams] = useState(null);
+  const [instutionLoading, setInstitutionLoading] = useState(true);
+  const [streamLoading, setStreamLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const [details, setDetails] = useState({
     username: "John Doe",
     email: "user@email.com",
     stream: "Computer Science",
-    institution: "MIT"
+    institution: "MIT",
+    stars: 0,
   });
   const {
-      register,
-      handleSubmit,
-      formState: { errors },
-      setValue
-    } = useForm();
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    reset
+  } = useForm();
 
   const seasons = [
     { gradient: "linear-gradient(135deg, #ff6ec4 0%, #7873f5 100%)", icon: "🌸" },
@@ -47,37 +49,79 @@ const Profile = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Fetch user details and populate form fields
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/user`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${JWTToken}`
-      }
-    }).then((res) => {
-      if (!res.ok) {
-        setLoading(false)
+    const fetchUserDetails = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/user`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${JWTToken}`
+          }
+        });
+        if (!res.ok) {
+          setError(true);
+          throw new Error('User details not fetched');
+        }
+        const data = await res.json();
+        setDetails({
+          username: data.data.user.name,
+          email: data.data.user.email,
+          stream: data.data.user.streamId._id,
+          institution: data.data.user.institutionId._id,
+          stars: data.data.user.starsGathered
+        });
+        // Populate form fields with fetched data
+        setValue('name', data.data.user.name);
+        setValue('streamId', data.data.user.streamId._id);
+        setValue('institutionId', data.data.user.institutionId._id);
+        sessionStorage.setItem("user", JSON.stringify(details));
+      } catch (err) {
+        console.log("Error raised during user details fetch: ", err);
         setError(true);
-        throw new Error('User details not fetched')
-      } else {
-        return res.json();
+      } finally {
+        setLoading(false);
       }
-    }).then((res) => {
-      setLoading(false)
-      setDetails({
-        username: res.data.user.name,
-        email: res.data.user.email,
-        stream: res.data.user.streamId._id,
-        institution: res.data.user.institutionId._id,
-        stars: res.data.user.starsGathered
-      })
-      sessionStorage.setItem("user", JSON.stringify(details))
-    }).catch((err) => {
-      setLoading(false)
-      setError(true)
-      console.log("Error raised during user details fetch: ", err)
-    })
-  }, [JWTToken]) // eslint-disable-line react-hooks/exhaustive-deps
+    };
+    fetchUserDetails();
+  }, [JWTToken, setValue]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch streams and institutions
+  useEffect(() => {
+    const fetchStreamsAndInstitutions = async () => {
+      try {
+        const [streamsRes, institutionsRes] = await Promise.all([
+          fetch(`${import.meta.env.VITE_BACKEND_URL}/streams`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }),
+          fetch(`${import.meta.env.VITE_BACKEND_URL}/institutions`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          })
+        ]);
+
+        if (!streamsRes.ok || !institutionsRes.ok) {
+          throw new Error("Failed to fetch streams or institutions");
+        }
+
+        const streamsData = await streamsRes.json();
+        const institutionsData = await institutionsRes.json();
+
+        setStreams(streamsData.data.streams);
+        setInstitutions(institutionsData.data.institutions);
+      } catch (err) {
+        console.log("Error fetching streams and institutions: ", err);
+        setError(true);
+      } finally {
+        setStreamLoading(false);
+        setInstitutionLoading(false);
+      }
+    };
+
+    fetchStreamsAndInstitutions();
+  }, []);
 
   const handleEditedDataSubmit = (data) => {
     setUpdating(true);
@@ -136,55 +180,20 @@ const Profile = () => {
     setEditMode(false);
     setError(false);
     // Reset form to current values
-    setValue('name', details.username);
-    setValue('streamId', details.stream);
-    setValue('institutionId', details.institution);
+    reset({
+      name: details.username,
+      streamId: details.stream,
+      institutionId: details.institution,
+    });
   }
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/institutions`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          setError(true);
-          throw new Error("Institutions Not fetched");
-        }
-        return res.json();
-      })
-      .then((res) => {
-        setInstitutions(res.data.institutions);
-        setInstitutionLoading(false);
-      })
-      .catch((err) => console.log("Error Found: ", err));
-
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/streams`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          setError(true);
-          throw new Error("Streams Not fetched");
-        }
-        return res.json();
-      })
-      .then((res) => {
-        setStreams(res.data.streams);
-        setStreamLoading(false);
-      })
-      .catch((err) => console.log("Error Found: ", err));
-  }, []);
-
-    if (instutionLoading || streamLoading)
-    return <div className="">Loading...</div>;
-  if (loading) return <div className="">Loading...</div>
-  if (error) return <div className="">Error Raised</div>
+  if (loading || instutionLoading || streamLoading) {
+    return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-gray-300 bg-black">Loading...</div>;
+  }
+  
+  if (error) {
+    return <div className="flex items-center justify-center min-h-screen text-4xl font-bold text-red-500 bg-black">Error Raised</div>;
+  }
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
@@ -228,7 +237,7 @@ const Profile = () => {
 
       {/* Profile Card */}
       <motion.div
-        className="relative bg-black/70 backdrop-blur-xl rounded-3xl p-10 w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl border border-white/30 z-10 bottom-5"
+        className="relative bg-black/70 backdrop-blur-xl rounded-3xl p-10 w-11/12 md:w-2/3 lg:w-1/2 shadow-2xl border border-white/30 z-10"
         animate={{ y: floatAnimation ? [0, -15, 0] : [0] }}
         transition={{ duration: 4, repeat: floatAnimation ? Infinity : 0, ease: "easeInOut" }}
       >
@@ -251,7 +260,7 @@ const Profile = () => {
 
         {/* Profile Fields */}
         <div className="">
-            <form id="profile-form" onSubmit={(e) => e.preventDefault()} className="grid grid-cols-1 md:grid-cols-2 gap-6 m-10 text-white text-lg">
+            <form id="profile-form" onSubmit={handleSubmit(handleEditedDataSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6 m-10 text-white text-lg">
                 <div className="flex flex-col">
                   <label className="uppercase text-gray-300 mb-1">Name</label>
                   <input
@@ -285,21 +294,19 @@ const Profile = () => {
                   <select
                     disabled={!editMode}
                     {...register("streamId", {
-                    required: "Stream is required",
+                      required: "Stream is required",
                     })}
                     defaultValue={details.stream}
                     className={`w-full px-3 py-2 rounded-lg border border-gray-500
                       bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
                       ${!editMode ? "cursor-not-allowed" : "bg-black/70"}`}
-                >
-                        {streams.map((stream) => (
-                          <div className="">
-                            <option value={stream._id} key={stream._id}>
-                                {stream.streamName}
-                            </option>
-                          </div>
-                        ))}
-                    </select>
+                  >
+                    {streams?.map((stream) => (
+                      <option value={stream._id} key={stream._id}>
+                        {stream.streamName}
+                      </option>
+                    ))}
+                  </select>
                   {errors.streamId && (
                     <span className="text-red-400 text-sm mt-1">{errors.streamId.message}</span>
                   )}
@@ -309,21 +316,19 @@ const Profile = () => {
                   <select
                     disabled={!editMode}
                     {...register("institutionId", {
-                    required: "Institution is required",
+                      required: "Institution is required",
                     })}
                     defaultValue={details.institution}
                     className={`w-full px-3 py-2 rounded-lg border border-gray-500
                       bg-black/50 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500
                       ${!editMode ? "cursor-not-allowed" : "bg-black/70"}`}
-                >
-                        {institutions.map((institution) => (
-                          <div className="">
-                            <option value={institution._id} key={institution._id}>
-                                {institution.name}
-                            </option>
-                          </div>
-                        ))}
-                    </select>
+                  >
+                    {institutions?.map((institution) => (
+                      <option value={institution._id} key={institution._id}>
+                        {institution.name}
+                      </option>
+                    ))}
+                  </select>
                   {errors.institutionId && (
                     <span className="text-red-400 text-sm mt-1">{errors.institutionId.message}</span>
                   )}
@@ -380,33 +385,6 @@ const Profile = () => {
           </div>
         </div>
       </motion.div>
-      {/* Separated Links Container */}
-      <div className="absolute bottom-5 w-full flex flex-col items-center gap-6 md:flex-row md:justify-center z-10">
-        <motion.a
-          href="/user/quizzes"
-          className="w-11/12 md:w-auto text-center bg-[#8b5cf6] text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          My Quizzes
-        </motion.a>
-        <motion.a
-          href="/create/quiz"
-          className="w-11/12 md:w-auto text-center bg-[#f59e0b] text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Create Quiz
-        </motion.a>
-        <motion.a
-          href="/leaderboard"
-          className="w-11/12 md:w-auto text-center bg-[#10b981] text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Leaderboard
-        </motion.a>
-      </div>
     </div>
   );
 };

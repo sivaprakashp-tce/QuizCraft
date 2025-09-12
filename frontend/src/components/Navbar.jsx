@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, User, Home, Info, Mail, BookCheck } from "lucide-react";
+import { Menu, X, User, Home, Info, Mail, BookCheck, Trophy, ScrollText } from "lucide-react";
 import { websiteLogo } from "../assets";
 import { getJWTToken } from "../utils";
 
@@ -21,7 +21,11 @@ const Navbar = () => {
     { name: "About", icon: Info, path: "/about" },
     { name: "Contact", icon: Mail, path: "/contact" },
   ];
-  const registeredMenu = [...commonMenu, { name: "Quizzes", icon: BookCheck, path: "/quizzes" }];
+  const registeredMenu = [
+    ...commonMenu,
+    { name: "My Quizzes", icon: ScrollText, path: "/user/quizzes" },
+    { name: "Leaderboard", icon: Trophy, path: "/leaderboard" },
+  ];
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black text-white shadow-md z-50">
