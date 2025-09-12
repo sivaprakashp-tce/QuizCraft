@@ -311,13 +311,15 @@ const UserQuizList = () => {
     // Otherwise, show quiz list
     return (
         <div className="relative">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#AD8B70] mb-6 text-center">Your Magical Scroll Archive</h2>
-            <Link
-              to="/create/quiz"
-              className="absolute top-0 right-0 px-6 py-3 bg-white text-black font-bold rounded-full shadow-lg hover:scale-105 transition-transform"
-            >
-              Create Quiz
-            </Link>
+            <div className="flex justify-between items-center flex-col md:flex-row">
+                <h2 className="text-3xl md:text-4xl font-bold text-[#AD8B70] mb-6 text-center">Your Magical Scroll Archive</h2>
+                <Link
+                  to="/create/quiz"
+                  className="px-6 py-3 bg-[#AD8B70] text-black text-lg font-bold rounded-full shadow-lg hover:scale-105 transition-transform"
+                >
+                  Create Quiz
+                </Link>
+            </div>
             {quizzes.length === 0 ? (
                 <div className="text-gray-400 text-lg text-center mt-20">No scrolls found in your archive. Time to create some!</div>
             ) : (

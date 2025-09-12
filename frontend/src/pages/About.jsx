@@ -86,14 +86,14 @@ const About = () => {
             <section>
               <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">Our Mission & Vision</h2>
               <p className="text-gray-300">
-                Our mission is to create a captivating and **magical quizzing experience** for enthusiasts of the wizarding world. We aim to blend the joy of discovery with robust, professional-grade technology. QuizCraft is designed to be more than a simple quiz site; it's a living, breathing digital realm where users can test their knowledge, track their progress, and contribute to a vibrant community.
+                Our mission is to create a captivating and magical quizzing experience for enthusiasts of the wizarding world. We aim to blend the joy of discovery with robust, professional-grade technology. QuizCraft is designed to be more than a simple quiz site; it's a living, breathing digital realm where users can test their knowledge, track their progress, and contribute to a vibrant community.
               </p>
             </section>
             
             <section>
               <h2 className="text-2xl md:text-3xl font-bold text-[#FFC107] mb-4">The Platform</h2>
               <p className="text-gray-300">
-                QuizCraft is a full-stack web application designed and built from the ground up. It provides a secure, reliable, and scalable platform for a range of users, from **students** and **teachers** to dedicated **admins**. Our system ensures a personalized experience, offering features like user profiles, real-time leaderboards, and detailed analytics for quiz creators.
+                QuizCraft is a full-stack web application designed and built from the ground up. It provides a secure, reliable, and scalable platform for a range of users, from students and teachers to dedicated admins. Our system ensures a personalized experience, offering features like user profiles, real-time leaderboards, and detailed analytics for quiz creators.
               </p>
             </section>
 
@@ -116,10 +116,10 @@ const About = () => {
                     Our magical user interface is built for speed and immersion.
                   </p>
                   <ul className="list-disc list-inside text-gray-400 space-y-1">
-                    <li>**React & Vite:** A powerful, modern framework for a fast, responsive UI.</li>
-                    <li>**Tailwind CSS:** For a consistent, magical design system.</li>
-                    <li>**Framer Motion & Anime.js:** To create fluid, enchanting animations and transitions.</li>
-                    <li>**JWT-based Authentication:** Secure user sessions and role-based views.</li>
+                    <li><strong>React & Vite:</strong> A powerful, modern framework for a fast, responsive UI.</li>
+                    <li><strong>Tailwind CSS:</strong> For a consistent, magical design system.</li>
+                    <li><strong>Framer Motion & Anime.js:</strong> To create fluid, enchanting animations and transitions.</li>
+                    <li><strong>JWT-based Authentication:</strong> Secure user sessions and role-based views.</li>
                   </ul>
                 </motion.div>
 
@@ -135,10 +135,10 @@ const About = () => {
                     A secure and scalable API handles all platform logic and data.
                   </p>
                   <ul className="list-disc list-inside text-gray-400 space-y-1">
-                    <li>**Node.js & Express.js:** A robust and scalable foundation for our API.</li>
-                    <li>**MongoDB:** A flexible NoSQL database to store quizzes, questions, and user data.</li>
-                    <li>**JWT & Bcrypt:** Secure, token-based authentication with password hashing.</li>
-                    <li>**Role-Based Access Control:** Ensures a secure experience for all users.</li>
+                    <li><strong>Node.js & Express.js:</strong> A robust and scalable foundation for our API.</li>
+                    <li><strong>MongoDB:</strong> A flexible NoSQL database to store quizzes, questions, and user data.</li>
+                    <li><strong>JWT & Bcrypt:</strong> Secure, token-based authentication with password hashing.</li>
+                    <li><strong>Role-Based Access Control:</strong> Ensures a secure experience for all users.</li>
                   </ul>
                 </motion.div>
               </div>

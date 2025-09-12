@@ -66,7 +66,7 @@ const ChromaGrid = ({ items, className = '', radius = 300, damping = 0.45, fadeO
       ref={rootRef}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
-      className={`relative w-full h-full flex flex-wrap justify-center items-start lg:gap-5 ${className}`}
+      className={`relative w-full h-full flex bg-transparent flex-wrap justify-center items-start lg:gap-5 ${className}`}
       style={{
         '--r': `${radius}px`,
         '--x': '50%',

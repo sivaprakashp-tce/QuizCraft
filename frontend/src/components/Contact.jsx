@@ -2,16 +2,6 @@ import React from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-const Contact = () => {
-  return (
-    <React.Fragment>
-      <div className="contact-section-wrapper md:w-10/12 w-full min-h-[90vh] flex justify-center items-center mx-auto flex-col-reverse md:flex-row">
-        <ContactForm />
-      </div>
-    </React.Fragment>
-  );
-};
-
 export const ContactForm = () => {
   useGSAP(() => {
     const formElements = gsap.utils.toArray('.contact-form-element')
@@ -41,8 +31,8 @@ export const ContactForm = () => {
   }, [])
   return (
     <React.Fragment>
-      <form className="w-4/5 h-full flex flex-col justify-around items-center" action="https://formsubmit.co/jusst2023@gmail.com" method="POST">
-        <input type="hidden" name="_next" value="https://jusst.netlify.app/thank-you" />
+      <form className="w-4/5 h-full flex flex-col justify-around items-center" action="https://formsubmit.co/d2b37987e336eaae9eab03c4ce3a8f06" method="POST">
+        <input type="hidden" name="_next" value="http://localhost:5173/thank-you" />
         <div className="contact-form-element">
           <label htmlFor="Name">
             Your Name<span className="text-red-600 font-semibold">*</span>
@@ -80,7 +70,7 @@ export const ContactForm = () => {
         </div>
         <button
           type="submit"
-          className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold m-5 text-xl hover:scale-[1.02] transition-transform"
+          className="cursor-pointer px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold m-5 text-xl hover:scale-[1.02] transition-transform"
         >
           Send
         </button>
@@ -88,5 +78,3 @@ export const ContactForm = () => {
     </React.Fragment>
   );
 };
-
-export default Contact;

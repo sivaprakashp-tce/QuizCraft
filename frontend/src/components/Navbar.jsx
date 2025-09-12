@@ -17,14 +17,16 @@ const Navbar = () => {
   };
 
   const commonMenu = [
-    { name: "Home", icon: Home, path: "/" },
+    { name: "Home", icon: Home, path: "/home" },
     { name: "About", icon: Info, path: "/about" },
-    { name: "Contact", icon: Mail, path: "/contact" },
+    { name: "Contact", icon: Mail, path: "/home#contact" },
   ];
   const registeredMenu = [
-    ...commonMenu,
+    { name: "Home", icon: Home, path: "/home" },
+    { name: "About", icon: Info, path: "/about" },
     { name: "My Quizzes", icon: ScrollText, path: "/user/quizzes" },
     { name: "Leaderboard", icon: Trophy, path: "/leaderboard" },
+    { name: "Contact", icon: Mail, path: "/home#contact" },
   ];
 
   return (

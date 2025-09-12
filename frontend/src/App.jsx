@@ -18,7 +18,7 @@ import EditQuestion from './pages/EditQuestion.jsx';
 import EditQuiz from './pages/EditQuiz.jsx';
 import About from '/src/pages/About.jsx';
 import NewHome from './pages/NewHome.jsx';
-import ContactPage from './pages/ContactPage.jsx';
+import ThankYou from './pages/ThankYou.jsx';
 
 function App() {
   return (
@@ -41,8 +41,8 @@ function App() {
                 <Route path='/user/quizzes' element={<QuizzesFromUser />} />
                 <Route path='/edit/question/:questionId' element={<EditQuestion />} />
                 <Route path='/edit/quiz/:quizId' element={<EditQuiz />} />
-                <Route path='/newhome' element={<NewHome />} />
-                <Route path='/contact' element={<ContactPage />} />
+                <Route path='/home' element={<NewHome />} />
+                <Route path='/thank-you' element={<ThankYou />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
         </BrowserRouter>
