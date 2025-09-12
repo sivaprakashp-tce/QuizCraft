@@ -7,12 +7,6 @@ import { useForm } from "react-hook-form";
 import { getJWTToken } from "../utils";
 import Navbar from "../components/Navbar";
 
-// Helper: decide text color based on background
-const getTextColor = (bg) => {
-  if (bg === "#808080" || bg === "#AD8B70") return "black";
-  return "white";
-};
-
 // Ripple background with canvas
 const RippleBackground = ({ setBgColor }) => {
   const canvasRef = useRef(null);
@@ -63,7 +57,7 @@ const RippleBackground = ({ setBgColor }) => {
         r: 0,
         fill: nextColor,
       });
-
+      setBgColor(nextColor);
       const fillAnimation = anime({
         targets: pageFill,
         r: targetR,
@@ -71,7 +65,7 @@ const RippleBackground = ({ setBgColor }) => {
         easing: "easeOutQuart",
         complete: () => {
           bgColor = pageFill.fill;
-          setBgColor(bgColor); // update parent state
+          // update parent state instantly
           removeAnimation(fillAnimation);
         },
       });
@@ -173,27 +167,60 @@ const RippleBackground = ({ setBgColor }) => {
     };
   }, [setBgColor]);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 -z-10 w-full h-full" />;
+  return (
+    <canvas ref={canvasRef} className="fixed inset-0 -z-10 w-full h-full" />
+  );
 };
 
 // Main CreateQuiz page
 const CreateQuiz = () => {
   const [bgColor, setBgColor] = useState("#AD8B70");
+  const [styles, setStyles] = useState({
+    textColor: "black",
+    borderColor: "black",
+    placeholderColor: "black",
+  });
+
+  useEffect(() => {
+    const getTextColor = (bg) => {
+      if (bg === "#808080" || bg === "#AD8B70") return "black";
+      return "white";
+    };
+
+    const getBorderColor = (bg) => {
+      if (bg === "#808080" || bg === "#AD8B70") return "black";
+      return "white";
+    };
+
+    const getInputPlaceholderColor = (bg) => {
+      if (bg === "#808080" || bg === "#AD8B70") return "black";
+      return "white";
+    };
+    setStyles({
+      textColor: getTextColor(bgColor),
+      borderColor: getBorderColor(bgColor),
+      placeholderColor: getInputPlaceholderColor(bgColor),
+    });
+  }, [bgColor]);
 
   return (
     <React.Fragment>
       <Navbar />
       <RippleBackground setBgColor={setBgColor} />
       <div className="content-container w-screen min-h-screen p-5">
-        <GetQuizDetails bgColor={bgColor} />
+        <GetQuizDetails styles={styles} />
       </div>
       <Footer />
     </React.Fragment>
   );
 };
 
-const GetQuizDetails = ({ bgColor }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+const GetQuizDetails = ({ styles }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -230,14 +257,12 @@ const GetQuizDetails = ({ bgColor }) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error Raised</div>;
 
-  const textColor = getTextColor(bgColor);
-
   return (
     <div className="w-full min-h-screen flex flex-col justify-center items-center p-8">
       {/* Heading */}
       <h1
         className="text-5xl font-extrabold mb-12 text-center"
-        style={{ color: textColor }}
+        style={{ color: styles.textColor }}
       >
         Create Quiz
       </h1>
@@ -251,7 +276,7 @@ const GetQuizDetails = ({ bgColor }) => {
           <label
             htmlFor="quiz-name"
             className="text-2xl mb-4 font-semibold"
-            style={{ color: textColor }}
+            style={{ color: styles.textColor }}
           >
             Enter Quiz Name
           </label>
@@ -259,7 +284,12 @@ const GetQuizDetails = ({ bgColor }) => {
             type="text"
             id="quiz-name"
             placeholder="Quiz Name"
-            className="p-4 rounded-xl border border-gray-400 text-white text-2xl w-full"
+            className="p-4 rounded-xl border text-2xl w-full"
+            style={{
+              borderColor: styles.borderColor,
+              color: styles.textColor,
+              placeholderColor: styles.placeholderColor,
+            }}
             {...register("quizName", { required: "Quiz title is required" })}
           />
           {errors.quizName && (
@@ -274,7 +304,7 @@ const GetQuizDetails = ({ bgColor }) => {
           <label
             htmlFor="quiz-description"
             className="text-2xl mb-4 font-semibold"
-            style={{ color: textColor }}
+            style={{ color: styles.textColor }}
           >
             Enter Quiz Description
           </label>
@@ -282,7 +312,12 @@ const GetQuizDetails = ({ bgColor }) => {
             type="text"
             id="quiz-description"
             placeholder="Quiz Description"
-            className="p-4 rounded-xl border border-gray-400 text-white text-2xl w-full"
+            className="p-4 rounded-xl border text-2xl w-full"
+            style={{
+              borderColor: styles.borderColor,
+              color: styles.textColor,
+              placeholderColor: styles.placeholderColor,
+            }}
             {...register("quizDescription", {
               required: "Quiz Description is required",
             })}
@@ -299,8 +334,8 @@ const GetQuizDetails = ({ bgColor }) => {
           type="submit"
           className="py-4 px-8 rounded-xl text-2xl font-bold hover:scale-105 transition duration-200 shadow-lg"
           style={{
-            backgroundColor: textColor === "white" ? "black" : "white",
-            color: textColor === "white" ? "white" : "black",
+            backgroundColor: styles.textColor === "white" ? "black" : "white",
+            color: styles.textColor === "white" ? "white" : "black",
             border: "2px solid black",
           }}
         >
@@ -311,10 +346,4 @@ const GetQuizDetails = ({ bgColor }) => {
   );
 };
 
-
-
 export default CreateQuiz;
-
-
-
-
